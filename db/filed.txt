@@ -59,8 +59,6 @@ RUNTIME:IncompatibleClassChangeError|413|Lambda closure does not implement Funct
 PARSE:PARSE041|414|Elvis operator ?: not parsed — distinct from #379 operator+ infinite recursion
 SEM:SEM054|415|String subscript s[0] rejected with SEM054 — no array-subscript support for String
 SEM:SEM021|416|Non-null assertion !! does not narrow Int? to Int — SEM021 false positive (distinct from #400 and #372)
-SEM:SEM015|417|mutableListOf() not defined as a built-in function — distinct from #405
-SEM:SEM015|418|Pair constructor not defined — distinct from #405 and #417
 PARSE:PARSE043|419|Destructured for ((k, v) in map) not parsed — PARSE043
 PARSE:PARSE010|420|open class modifier and override method modifier not parsed
 PARSE:PARSE015|421|Kof-style primary constructor class Foo(param: Type) not parsed when class has a body

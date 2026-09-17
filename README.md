@@ -145,7 +145,9 @@ No índice (`db/filed.txt`), uma entrada pode terminar em `:*` para correspondê
   *`kof.io` values only with inferred type — explicit annotation gives SEM011*
 - `String.split()` devolve `String[]`, não `List<String>` (#372)
 - sem `StringBuilder` — classe Java, não existe no Kof / `StringBuilder` is a Java class, not a Kof type
-- sem `Math` — classe Java, não existe no Kof / `Math` is a Java class, not a Kof type
+- sem `Math.abs()` — Kof tem `math.abs()` (namespace `kof.math`), não a classe Java / Kof has `math.abs()`, not the Java class
+- sem `mutableListOf()` — função do Kotlin, não do Kof; use `listOf()` que já é mutável / Kotlin stdlib, not Kof; `listOf()` is already mutable
+- sem `Pair<K,V>` embutido — não é stdlib do Kof; defina `record Pair(first: K, second: V)` / not Kof stdlib; define a record instead
 
 ---
 
