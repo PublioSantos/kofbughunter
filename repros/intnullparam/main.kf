@@ -1,0 +1,8 @@
+check(x: Int?): String {
+    if (x == null) { return "null" }
+    return x.toString()
+}
+main() {
+    println(check(42))
+    println(check(null))
+}

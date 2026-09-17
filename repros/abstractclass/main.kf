@@ -1,0 +1,14 @@
+abstract class Drawable {
+    abstract draw(): String
+    describe(): String { return "I am " + draw() }
+}
+class Square extends Drawable {
+    Int side
+    constructor(s: Int) { side = s }
+    draw(): String { return "a square with side " + side }
+}
+main() {
+    val sq: Square = Square(5)
+    println(sq.draw())
+    println(sq.describe())
+}

@@ -64,6 +64,47 @@ Outros comandos / Other commands: `list`, `stats`, `known`, `build` (recompila o
 
 ---
 
+## Acompanhamento de versão / Version tracking
+
+**[PT]** Todo comando que invoca o compilador consulta o feed de releases antes
+(no máximo uma vez por dia) e **faz o upgrade automaticamente** se houver versão
+nova. O toolchain ativo é o symlink `kof-toolchain/current`, então o upgrade é só
+repontar o link. O tarball é verificado contra o `SHA256SUMS` da release antes de
+ser extraído.
+
+**[EN]** Every command that invokes the compiler checks the release feed first
+(at most once a day) and **upgrades automatically** when a newer version exists.
+The active toolchain is the `kof-toolchain/current` symlink, so an upgrade is
+just a repointed link. The tarball is verified against the release `SHA256SUMS`
+before extraction.
+
+```bash
+./kofbug version    # installed vs. latest upstream
+./kofbug upgrade    # download + verify + install + rebuild
+./kofbug regress    # re-run every repro; report what moved vs. baseline
+./kofbug baseline   # freeze current verdicts as the new baseline
+```
+
+`KOFBUG_NO_UPDATE=1` fixa a versão atual / pins the current version.
+
+**[PT]** Depois de um upgrade, `regress` é o que diz **quais bugs reportados foram
+corrigidos**: cada repro guarda o veredito da primeira captura em `baseline.txt`, e
+só o que mudou aparece (`FIXED`, `BROKE`, `CHANGED`). Um repro que sempre passou é
+controle, não correção.
+
+**[EN]** After an upgrade, `regress` is what tells you **which filed bugs got
+fixed**: each repro stores its first verdict in `baseline.txt`, and only what moved
+is reported (`FIXED`, `BROKE`, `CHANGED`). A repro that always passed is a control,
+not a fix.
+
+**[PT]** A linha `## Environment` das issues é medida do toolchain vivo, nunca fixa —
+uma issue não pode alegar uma versão contra a qual o repro não rodou.
+
+**[EN]** The `## Environment` line of every issue is probed from the live toolchain,
+never hardcoded — an issue can never claim a version the repro was not run against.
+
+---
+
 ## Vereditos / Verdicts
 
 - **`NOVEL`** — nenhuma issue tem essa assinatura → candidato a bug novo  

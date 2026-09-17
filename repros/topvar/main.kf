@@ -1,0 +1,7 @@
+var counter: Int = 0
+increment() { counter = counter + 1 }
+main() {
+    increment()
+    increment()
+    println(counter)
+}

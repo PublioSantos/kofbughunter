@@ -1,0 +1,14 @@
+grade(score: Int): String {
+    when (score) {
+        100 -> return "perfect"
+        in 90..99 -> return "excellent"
+        in 70..89 -> return "good"
+        else -> return "needs improvement"
+    }
+}
+main() {
+    println(grade(100))
+    println(grade(95))
+    println(grade(80))
+    println(grade(60))
+}

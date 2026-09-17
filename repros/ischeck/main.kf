@@ -1,0 +1,21 @@
+class Vehicle { }
+class Car extends Vehicle {
+    Int doors
+    constructor(d: Int) { doors = d }
+}
+class Truck extends Vehicle {
+    Int payload
+    constructor(p: Int) { payload = p }
+}
+describe(v: Vehicle) {
+    if (v is Car) {
+        val c: Car = v as Car
+        println("Car with " + c.doors + " doors")
+    } else {
+        println("not a Car")
+    }
+}
+main() {
+    describe(Car(4))
+    describe(Truck(1000))
+}

@@ -4,25 +4,226 @@
 # This wrapper only does what Kof has no API for: spawning processes.
 set -uo pipefail
 
-KOFHOME="${KOFHOME:-/home/publio/Downloads/install/kof-toolchain/kof-0.4.2-beta-linux-x86_64}"
-KOF="$KOFHOME/bin/kof"
-JAVA="$KOFHOME/jdk/bin/java"
-JAVAP="$KOFHOME/jdk/bin/javap"
-RT="$KOFHOME/lib/kof.jar"
+KOFROOT="${KOFROOT:-/home/publio/Downloads/install/kof-toolchain}"
+PLATFORM="${KOF_PLATFORM:-linux-x86_64}"
+UPSTREAM="${KOF_UPSTREAM:-KofLang/Kof4j}"
 
 SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APOIADOR="$SELF/apoiador/build/classes"
 DB="$SELF/db/filed.txt"
 TPL="$SELF/tpl/issue.md"
 REPROS="$SELF/repros"
+STAMP="$SELF/db/.update-check"
+
+die() { echo "kofbug: $*" >&2; exit 1; }
+
+# The active toolchain is whatever "current" points at, so an upgrade is just a
+# repointed symlink and every path below follows along.
+KOFHOME="${KOFHOME:-$KOFROOT/current}"
+
+# First run has no symlink yet, and the Kof comparator cannot run before a
+# toolchain is chosen — so the bootstrap alone leans on sort -V.
+ensure_kofhome() {
+  [ -e "$KOFHOME" ] && return 0
+  [ "$KOFHOME" = "$KOFROOT/current" ] || die "KOFHOME does not exist: $KOFHOME"
+  local best="" bestv="" v
+  for d in "$KOFROOT"/kof-*-"$PLATFORM"; do
+    [ -f "$d/VERSION" ] || continue
+    v="$(cat "$d/VERSION")"
+    if [ -z "$best" ] || [ "$(printf '%s\n%s\n' "$bestv" "$v" | sort -V | tail -1)" = "$v" ]; then
+      best="$d"; bestv="$v"
+    fi
+  done
+  [ -n "$best" ] || die "no Kof toolchain found under $KOFROOT"
+  ln -sfn "$best" "$KOFROOT/current"
+  echo "kofbug: toolchain pinned to $bestv"
+}
+ensure_kofhome
+
+KOF="$KOFHOME/bin/kof"
+JAVA="$KOFHOME/jdk/bin/java"
+JAVAP="$KOFHOME/jdk/bin/javap"
+RT="$KOFHOME/lib/kof.jar"
 
 apoiador() { "$JAVA" -cp "$RT:$APOIADOR" Default.Main "$@"; }
 
-die() { echo "kofbug: $*" >&2; exit 1; }
+installed_version() { cat "$KOFHOME/VERSION" 2>/dev/null || echo "0.0.0"; }
+
+# The comparator runs on the active toolchain, which is exactly what an upgrade
+# is trying to replace - so every call degrades to sort -V rather than deadlock
+# on a toolchain too broken to run the apoiador. sort -V misorders pre-release
+# suffixes, but "is there something newer" survives that.
+vercmp() {
+  local out
+  if out="$(apoiador vercmp "$1" "$2" 2>/dev/null)" && [ -n "$out" ]; then
+    echo "$out"; return 0
+  fi
+  if [ "$1" = "$2" ]; then echo EQ
+  elif [ "$(printf '%s\n%s\n' "$1" "$2" | sort -V | tail -1)" = "$2" ]; then echo LT
+  else echo GT
+  fi
+}
+
+# Release tags carry every platform; keep ours, strip to the bare version, and
+# let the comparator pick the highest - the feed is date-ordered, not
+# version-ordered.
+latest_version() {
+  local raw; raw="$(mktemp)"
+  gh api "repos/$UPSTREAM/releases" --paginate \
+     -q ".[] | select(.tag_name | test(\"-$PLATFORM\$\")) | .tag_name" 2>/dev/null \
+    | sed -n "s/^kof-\(.*\)-$PLATFORM\$/\1/p" > "$raw"
+  if [ ! -s "$raw" ]; then rm -f "$raw"; return 1; fi
+  local out
+  if ! out="$(apoiador latest "$raw" 2>/dev/null)" || [ -z "$out" ]; then
+    out="$(sort -V "$raw" | tail -1)"
+  fi
+  rm -f "$raw"
+  echo "$out"
+}
+
+# The Environment section of every issue is probed here, so a filed issue can
+# never claim a version the repro was not actually run against.
+env_line() {
+  local raw jdk vendor build os
+  raw="$("$JAVA" -version 2>&1)"
+  jdk="$(echo "$raw"    | sed -n '1s/.*version "\([^"]*\)".*/\1/p')"
+  vendor="$(echo "$raw" | sed -n '2s/.*Runtime Environment \([^ ]*\).*/\1/p')"
+  build="$(echo "$raw"  | sed -n '2s/.*(build \([^)]*\)).*/\1/p')"
+  # the vendor token drops the release-train suffix that the build string keeps
+  case "$build" in
+    *-LTS) [ "${vendor%-LTS}" = "$vendor" ] && vendor="$vendor-LTS" ;;
+  esac
+  os="$(. /etc/os-release 2>/dev/null && echo "$PRETTY_NAME")"
+  printf 'Kof %s, JVM target / OpenJDK %s (%s) / %s, %s\n' \
+    "$(installed_version)" "${jdk:-unknown}" "${vendor:-${build:-unknown}}" \
+    "${os:-unknown}" "$(uname -m)"
+}
 
 cmd_build() {
   ( cd "$SELF/apoiador" && "$KOF" build . --target jvm ) || die "apoiador failed to compile"
   echo "apoiador rebuilt"
+}
+
+cmd_version() {
+  local cur latest; cur="$(installed_version)"
+  echo "installed : kof $cur  ($(readlink -f "$KOFHOME"))"
+  if ! latest="$(latest_version)" || [ -z "$latest" ]; then
+    echo "upstream  : unreachable"; return 0
+  fi
+  echo "upstream  : kof $latest  ($UPSTREAM, $PLATFORM)"
+  case "$(vercmp "$cur" "$latest")" in
+    LT) echo "status    : OUTDATED - run './kofbug upgrade'" ;;
+    GT) echo "status    : AHEAD of the release feed (local build?)" ;;
+    *)  echo "status    : current" ;;
+  esac
+}
+
+cmd_upgrade() {
+  local cur latest; cur="$(installed_version)"
+  latest="$(latest_version)" || die "cannot reach the release feed for $UPSTREAM"
+  [ -n "$latest" ] || die "no $PLATFORM release found upstream"
+  if [ "$(vercmp "$cur" "$latest")" != "LT" ]; then
+    echo "kof $cur is current (latest upstream: $latest)"
+    date +%s > "$STAMP"; return 0
+  fi
+
+  echo "kofbug: upgrading kof $cur -> $latest"
+  local tag="kof-$latest-$PLATFORM" tgz="kof-$latest-$PLATFORM.tar.gz"
+  ( cd "$KOFROOT" && gh release download "$tag" --repo "$UPSTREAM" \
+      --pattern "$tgz" --pattern SHA256SUMS --clobber ) \
+    || die "download of $tag failed"
+
+  # The release ships SHA256SUMS; refuse to unpack a tarball that fails it.
+  ( cd "$KOFROOT" && grep -F "$tgz" SHA256SUMS | sha256sum -c - ) \
+    || die "checksum mismatch on $tgz - refusing to install"
+
+  ( cd "$KOFROOT" && tar xzf "$tgz" ) || die "extraction of $tgz failed"
+  [ -f "$KOFROOT/kof-$latest-$PLATFORM/VERSION" ] \
+    || die "extracted tree has no VERSION file - layout changed?"
+
+  local prev; prev="$(readlink -f "$KOFHOME")"
+  ln -sfn "$KOFROOT/kof-$latest-$PLATFORM" "$KOFROOT/current"
+  echo "kofbug: toolchain now kof $latest"
+
+  # A new compiler that cannot build the apoiador is itself a finding, so keep
+  # the working classes and say so rather than leaving the tool broken.
+  local backup; backup="$(mktemp -d)"
+  cp -r "$APOIADOR/." "$backup/" 2>/dev/null || true
+  if ( cd "$SELF/apoiador" && "$KOF" build . --target jvm ) >/dev/null 2>&1; then
+    echo "kofbug: apoiador rebuilt with kof $latest"
+  else
+    rm -rf "$APOIADOR"; mkdir -p "$APOIADOR"; cp -r "$backup/." "$APOIADOR/"
+    echo "kofbug: WARNING - kof $latest cannot compile the apoiador." >&2
+    echo "kofbug: kept the classes built by $(basename "$prev"); this is a bug candidate." >&2
+    echo "kofbug: see './kofbug build' for the errors." >&2
+  fi
+  rm -rf "$backup"
+  date +%s > "$STAMP"
+
+  echo "kofbug: run './kofbug regress' to see which filed bugs $latest fixed"
+}
+
+# Runs before anything that invokes the compiler. Cached for a day so a hunt
+# with dozens of repros does not hit the release API on every single run.
+auto_check() {
+  [ -n "${KOFBUG_NO_UPDATE:-}" ] && return 0
+  command -v gh >/dev/null 2>&1 || return 0
+  if [ -f "$STAMP" ]; then
+    local age=$(( $(date +%s) - $(cat "$STAMP" 2>/dev/null || echo 0) ))
+    [ "$age" -lt 86400 ] && return 0
+  fi
+  local cur latest; cur="$(installed_version)"
+  if ! latest="$(latest_version)" || [ -z "$latest" ]; then
+    return 0   # offline is not a reason to block a hunt
+  fi
+  date +%s > "$STAMP"
+  [ "$(vercmp "$cur" "$latest")" = "LT" ] || return 0
+  echo "kofbug: kof $latest is out (installed: $cur)" >&2
+  cmd_upgrade
+}
+
+# Re-run every repro and report only what MOVED against its recorded baseline.
+# A repro that was always clean is a control, not a fix - after an upgrade the
+# only interesting lines are the changes.
+cmd_regress() {
+  local n=0 moved=0
+  for d in "$REPROS"/*/; do
+    [ -d "$d" ] || continue
+    [ -f "$d/main.kf" ] || continue
+    local name; name="$(basename "$d")"
+    n=$((n + 1))
+    cmd_run "$name" >/dev/null 2>&1
+    local now was; now="$(cat "$d/.cap/verdict" 2>/dev/null)"
+    was="$(cat "$d/baseline.txt" 2>/dev/null)"
+    [ "$now" = "$was" ] && continue
+    moved=$((moved + 1))
+    if [ "$now" = "CLEAN" ]; then
+      printf '  %-24s FIXED    %s -> CLEAN\n' "$name" "$was"
+    elif [ "$was" = "CLEAN" ]; then
+      printf '  %-24s BROKE    CLEAN -> %s\n' "$name" "$now"
+    else
+      printf '  %-24s CHANGED  %s -> %s\n' "$name" "$was" "$now"
+    fi
+  done
+  echo
+  if [ "$moved" -eq 0 ]; then
+    echo "$n repros re-run against kof $(installed_version); nothing moved"
+  else
+    echo "$n repros re-run against kof $(installed_version); $moved moved"
+    echo "FIXED lines: check db/filed.txt - those issues may be closeable"
+    echo "accept the new state with './kofbug baseline'"
+  fi
+  return 0
+}
+
+# Freeze the current verdicts as the new baseline, after the moves were reviewed.
+cmd_baseline() {
+  local n=0
+  for d in "$REPROS"/*/; do
+    [ -f "$d/.cap/verdict" ] || continue
+    cp "$d/.cap/verdict" "$d/baseline.txt"; n=$((n + 1))
+  done
+  echo "baseline frozen for $n repros at kof $(installed_version)"
 }
 
 cmd_new() {
@@ -49,6 +250,7 @@ cmd_run() {
 
   cp "$d/main.kf" "$cap/main.kf"
   [ -f "$d/expected.txt" ] && cp "$d/expected.txt" "$cap/expected.txt"
+  env_line > "$cap/env.txt"
 
   ( cd "$d" && "$KOF" build . --target jvm ) > "$cap/build.txt" 2>&1
   echo "$?" > "$cap/build.rc"
@@ -66,7 +268,12 @@ cmd_run() {
     : > "$cap/run.txt"; echo "na" > "$cap/run.rc"; : > "$cap/bytecode.txt"
   fi
 
-  apoiador triage "$cap" "$DB"
+  local tri; tri="$(apoiador triage "$cap" "$DB")"
+  echo "$tri"
+  echo "$tri" | sed -n 's/^signature *: *//p' > "$cap/verdict"
+  # first capture of a repro defines what the toolchain did back then, so a
+  # later upgrade has something to be compared against
+  [ -s "$d/baseline.txt" ] || cp "$cap/verdict" "$d/baseline.txt"
 }
 
 cmd_triage() {
@@ -123,8 +330,8 @@ cmd_list() {
 }
 
 usage() {
+  echo "kofbug - driver for the Kof $(installed_version) bug hunt"
   cat <<'USAGE'
-kofbug - driver for the Kof 0.4.2-beta bug hunt
 
   new <name>              scaffold repros/<name>/main.kf
   run <name>              build + run + javap, capture, triage
@@ -136,21 +343,33 @@ kofbug - driver for the Kof 0.4.2-beta bug hunt
   known                   list every filed issue
   file <sig> <n> <title>  record a newly filed issue for dedup
   build                   recompile the Kof apoiador
+  version                 installed vs. latest upstream kof
+  upgrade                 download + verify + install the latest kof
+  regress                 re-run every repro; report what moved vs. baseline
+  baseline                freeze the current verdicts as the new baseline
 
-The triage/issue/stats/known logic all lives in apoiador/main.kf (Kof).
+Every command that invokes the compiler checks the release feed first (once a
+day); an outdated toolchain is upgraded automatically. Set KOFBUG_NO_UPDATE=1
+to pin the current version.
+
+The triage/issue/stats/known/vercmp logic all lives in apoiador/main.kf (Kof).
 USAGE
 }
 
 case "${1:-}" in
   new)    shift; cmd_new "$@" ;;
-  run)    shift; cmd_run "$@" ;;
+  run)    shift; auto_check; cmd_run "$@" ;;
   triage) shift; cmd_triage "$@" ;;
   issue)  shift; cmd_issue "$@" ;;
   focus)  shift; cmd_focus "$@" ;;
   list)   shift; cmd_list "$@" ;;
   stats)  shift; cmd_stats "$@" ;;
   known)  shift; cmd_known "$@" ;;
-  file)   shift; cmd_file "$@" ;;
-  build)  shift; cmd_build "$@" ;;
-  *)      usage ;;
+  file)    shift; cmd_file "$@" ;;
+  build)   shift; auto_check; cmd_build "$@" ;;
+  version) shift; cmd_version "$@" ;;
+  upgrade) shift; cmd_upgrade "$@" ;;
+  regress)  shift; auto_check; cmd_regress "$@" ;;
+  baseline) shift; cmd_baseline "$@" ;;
+  *)       usage ;;
 esac

@@ -1,0 +1,11 @@
+main() {
+    val nums: List<Int> = listOf()
+    nums.add(1)
+    nums.add(2)
+    nums.add(3)
+    nums.add(4)
+    nums.add(5)
+    val evens: List<Int> = nums.filter((x: Int) -> { return x % 2 == 0 })
+    println(evens.size())
+    for (var n in evens) { println(n) }
+}

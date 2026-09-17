@@ -1,0 +1,13 @@
+class Vec2 {
+    Int x
+    Int y
+    constructor(a: Int, b: Int) { x = a; y = b }
+    plus(other: Vec2): Vec2 { return Vec2(x + other.x, y + other.y) }
+    toString(): String { return "(" + x + "," + y + ")" }
+}
+main() {
+    val a: Vec2 = Vec2(1, 2)
+    val b: Vec2 = Vec2(3, 4)
+    val c: Vec2 = a.plus(b)
+    println(c.toString())
+}

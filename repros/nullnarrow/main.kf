@@ -1,0 +1,8 @@
+show(x: Int?): String {
+    if (x == null) { return "none" }
+    return x.toString()
+}
+main() {
+    println(show(5))
+    println(show(null))
+}

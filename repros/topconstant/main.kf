@@ -1,0 +1,7 @@
+val PI: Double = 3.14159
+circleArea(r: Double): Double {
+    return PI * r * r
+}
+main() {
+    println(circleArea(2.0))
+}

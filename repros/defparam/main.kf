@@ -1,0 +1,7 @@
+greet(name: String, greeting: String = "Hello"): String {
+    return greeting + ", " + name + "!"
+}
+main() {
+    println(greet("World"))
+    println(greet("Kof", "Hi"))
+}

@@ -1,0 +1,9 @@
+sum(vararg nums: Int): Int {
+    var total: Int = 0
+    for (var n in nums) { total = total + n }
+    return total
+}
+main() {
+    println(sum(1, 2, 3))
+    println(sum(10, 20))
+}

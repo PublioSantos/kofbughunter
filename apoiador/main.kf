@@ -32,6 +32,100 @@ charAtStr(s: String, i: Int): String {
     return s.substring(i, i + 1)
 }
 
+// hand-rolled split: String.split() takes a regex upstream, and "." is exactly
+// the separator a version string needs
+splitOn(s: String, sep: String): List<String> {
+    val out: List<String> = listOf()
+    var rest: String = s
+    var at: Int = rest.indexOf(sep)
+    while (at >= 0) {
+        out.add(rest.substring(0, at))
+        rest = rest.substring(at + sep.length(), rest.length())
+        at = rest.indexOf(sep)
+    }
+    out.add(rest)
+    return out
+}
+
+rankOf(c: String): Int {
+    val alphabet: String = "0123456789abcdefghijklmnopqrstuvwxyz"
+    return alphabet.indexOf(c)
+}
+
+lexCmp(a: String, b: String): Int {
+    var i: Int = 0
+    while (i < a.length()) {
+        if (i >= b.length()) { return 1 }
+        val ca: String = charAtStr(a, i)
+        val cb: String = charAtStr(b, i)
+        if (ca != cb) {
+            if (rankOf(ca) > rankOf(cb)) { return 1 }
+            return 0 - 1
+        }
+        i = i + 1
+    }
+    if (b.length() > a.length()) { return 0 - 1 }
+    return 0
+}
+
+stripZeros(s: String): String {
+    var out: String = s
+    while (out.length() > 1) {
+        if (charAtStr(out, 0) != "0") { return out }
+        out = out.substring(1, out.length())
+    }
+    return out
+}
+
+// compares decimal segments without parsing them: once leading zeros are gone,
+// the longer digit string is always the larger number (so 10 > 2, which a plain
+// string compare gets wrong)
+cmpNumeric(a: String, b: String): Int {
+    val na: String = stripZeros(a)
+    val nb: String = stripZeros(b)
+    if (na.length() > nb.length()) { return 1 }
+    if (na.length() < nb.length()) { return 0 - 1 }
+    return lexCmp(na, nb)
+}
+
+coreOf(v: String): String {
+    val dash: Int = v.indexOf("-")
+    if (dash < 0) { return v }
+    return v.substring(0, dash)
+}
+
+suffixOf(v: String): String {
+    val dash: Int = v.indexOf("-")
+    if (dash < 0) { return "" }
+    return v.substring(dash + 1, v.length())
+}
+
+cmpVersion(a: String, b: String): Int {
+    val pa: List<String> = splitOn(coreOf(a), ".")
+    val pb: List<String> = splitOn(coreOf(b), ".")
+    var n: Int = pa.size()
+    if (pb.size() > n) { n = pb.size() }
+    var i: Int = 0
+    while (i < n) {
+        var sa: String = "0"
+        var sb: String = "0"
+        if (i < pa.size()) { sa = pa.get(i) }
+        if (i < pb.size()) { sb = pb.get(i) }
+        val c: Int = cmpNumeric(sa, sb)
+        if (c != 0) { return c }
+        i = i + 1
+    }
+    // same numbers: a final release outranks any pre-release of it
+    val xa: String = suffixOf(a)
+    val xb: String = suffixOf(b)
+    if (xa == "") {
+        if (xb == "") { return 0 }
+        return 1
+    }
+    if (xb == "") { return 0 - 1 }
+    return lexCmp(xa, xb)
+}
+
 extractBracketCode(line: String): String {
     var open: Int = 0 - 1
     var i: Int = 0
@@ -234,12 +328,42 @@ cmdIssue(capDir: String, tplPath: String) {
     var actual: String = actualRun
     if (actualRun.trim() == "") { actual = actualBuild }
     if (actualBuild.contains("error:")) { actual = actualBuild }
+    // the Environment line is probed from the live toolchain, so an issue can
+    // never claim a version the repro was not actually run against
+    var env: String = readAll(capDir + "/env.txt").trim()
+    if (env == "") { env = "Kof (version not captured), JVM target" }
     var tpl: String = readAll(tplPath)
+    tpl = tpl.replace("@@ENVIRONMENT@@", env)
     tpl = tpl.replace("@@REPRO@@", repro.trim())
     tpl = tpl.replace("@@EXPECTED@@", expected.trim())
     tpl = tpl.replace("@@ACTUAL@@", actual.trim())
     tpl = tpl.replace("@@BYTECODE@@", bytecode.trim())
     println(tpl)
+}
+
+cmdVercmp(a: String, b: String) {
+    val c: Int = cmpVersion(a, b)
+    if (c < 0) { println("LT"); return }
+    if (c > 0) { println("GT"); return }
+    println("EQ")
+}
+
+// picks the highest version from a newline-separated list; the release feed is
+// ordered by publish date, which is not the same as ordered by version
+cmdLatest(listPath: String) {
+    val lines: List<String> = readLines(listPath)
+    var best: String = ""
+    for (var raw in lines) {
+        val v: String = raw.trim()
+        if (v != "") {
+            if (best == "") {
+                best = v
+            } else {
+                if (cmpVersion(v, best) > 0) { best = v }
+            }
+        }
+    }
+    println(best)
 }
 
 cmdStats(dbPath: String) {
@@ -284,6 +408,8 @@ usage() {
     println("  issue  <capdir> <template>  emit the 8-section issue skeleton")
     println("  stats  <db>                 signature breakdown of filed issues")
     println("  known  <db>                 list every filed issue")
+    println("  vercmp <a> <b>              compare two versions: LT | EQ | GT")
+    println("  latest <file>               highest version in a newline list")
 }
 
 main(argv: String[]) {
@@ -307,6 +433,16 @@ main(argv: String[]) {
     if (cmd == "known") {
         if (argv.length < 2) { println("known needs <db>"); return }
         cmdKnown(argv[1])
+        return
+    }
+    if (cmd == "vercmp") {
+        if (argv.length < 3) { println("vercmp needs <a> <b>"); return }
+        cmdVercmp(argv[1], argv[2])
+        return
+    }
+    if (cmd == "latest") {
+        if (argv.length < 2) { println("latest needs <file>"); return }
+        cmdLatest(argv[1])
         return
     }
     usage()

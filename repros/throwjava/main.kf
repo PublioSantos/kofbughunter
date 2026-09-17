@@ -1,0 +1,7 @@
+main() {
+    try {
+        throw java.lang.IllegalArgumentException("bad input")
+    } catch (java.lang.IllegalArgumentException e) {
+        println(e.message)
+    }
+}
