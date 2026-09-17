@@ -1,10 +1,10 @@
 # kofbughunter
 
-**[PT]** Ferramenta de apoio mecânico para a caça a bugs no Kof 0.4.2-beta (JVM target).
+**[PT]** Ferramenta de apoio mecânico para a caça a bugs no Kof (JVM target).
 Faz tudo que é repetitivo para que o esforço de IA fique só onde é inevitável:
 gerar o repro e explicar a causa raiz.
 
-**[EN]** Mechanical support tool for bug-hunting in Kof 0.4.2-beta (JVM target).
+**[EN]** Mechanical support tool for bug-hunting in Kof (JVM target).
 Handles all repetitive work so AI effort is spent only where it cannot be replaced:
 inventing the reproducer and explaining the root cause.
 
