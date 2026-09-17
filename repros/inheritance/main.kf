@@ -1,0 +1,15 @@
+class Animal {
+    String name
+    constructor(n: String) { name = n }
+    speak(): String { return name + " makes a sound" }
+}
+class Dog extends Animal {
+    constructor(n: String) { super(n) }
+    speak(): String { return name + " barks" }
+}
+main() {
+    val d: Dog = Dog("Rex")
+    println(d.speak())
+    val a: Animal = d
+    println(a.speak())
+}

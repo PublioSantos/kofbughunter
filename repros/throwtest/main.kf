@@ -1,0 +1,7 @@
+main() {
+    try {
+        throw RuntimeException("oops")
+    } catch (RuntimeException e) {
+        println(e.message)
+    }
+}

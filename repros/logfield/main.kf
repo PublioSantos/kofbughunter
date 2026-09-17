@@ -1,0 +1,11 @@
+class Collector {
+    List<String> log
+    constructor() { log = listOf() }
+    emit(event: String) { log.add(event) }
+    count(): Int { return log.size() }
+}
+main() {
+    val c: Collector = Collector()
+    c.emit("a")
+    println(c.count())
+}

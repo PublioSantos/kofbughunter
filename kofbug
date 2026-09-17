@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+# kofbug - driver for the Kof bug hunt.
+# Everything mechanical lives in the Kof apoiador (apoiador/main.kf).
+# This wrapper only does what Kof has no API for: spawning processes.
+set -uo pipefail
+
+KOFHOME="${KOFHOME:-/home/publio/Downloads/install/kof-toolchain/kof-0.4.2-beta-linux-x86_64}"
+KOF="$KOFHOME/bin/kof"
+JAVA="$KOFHOME/jdk/bin/java"
+JAVAP="$KOFHOME/jdk/bin/javap"
+RT="$KOFHOME/lib/kof.jar"
+
+SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APOIADOR="$SELF/apoiador/build/classes"
+DB="$SELF/db/filed.txt"
+TPL="$SELF/tpl/issue.md"
+REPROS="$SELF/repros"
+
+apoiador() { "$JAVA" -cp "$RT:$APOIADOR" Default.Main "$@"; }
+
+die() { echo "kofbug: $*" >&2; exit 1; }
+
+cmd_build() {
+  ( cd "$SELF/apoiador" && "$KOF" build . --target jvm ) || die "apoiador failed to compile"
+  echo "apoiador rebuilt"
+}
+
+cmd_new() {
+  local name="${1:-}"; [ -n "$name" ] || die "new needs a name"
+  local d="$REPROS/$name"
+  [ -e "$d" ] && die "$name already exists"
+  mkdir -p "$d"
+  cat > "$d/main.kf" <<'KF'
+main() {
+    println("replace me with the repro")
+}
+KF
+  printf 'replace me with the expected output\n' > "$d/expected.txt"
+  echo "$d/main.kf"
+}
+
+# build + run + javap, capture everything, then hand off to the Kof apoiador
+cmd_run() {
+  local name="${1:-}"; [ -n "$name" ] || die "run needs a repro name"
+  local d="$REPROS/$name"
+  [ -d "$d" ] || die "no such repro: $name"
+  local cap="$d/.cap"
+  rm -rf "$cap" "$d/build"; mkdir -p "$cap"
+
+  cp "$d/main.kf" "$cap/main.kf"
+  [ -f "$d/expected.txt" ] && cp "$d/expected.txt" "$cap/expected.txt"
+
+  ( cd "$d" && "$KOF" build . --target jvm ) > "$cap/build.txt" 2>&1
+  echo "$?" > "$cap/build.rc"
+
+  if [ -d "$d/build/classes" ]; then
+    "$JAVA" -cp "$RT:$d/build/classes" Default.Main > "$cap/run.txt" 2>&1
+    echo "$?" > "$cap/run.rc"
+    # dump every emitted class; the interesting one is rarely just Main
+    : > "$cap/bytecode.txt"
+    while IFS= read -r c; do
+      echo "// ===== $(basename "$c" .class) =====" >> "$cap/bytecode.txt"
+      "$JAVAP" -c -p -verbose "$c" >> "$cap/bytecode.txt" 2>&1
+    done < <(find "$d/build/classes" -name '*.class' | sort)
+  else
+    : > "$cap/run.txt"; echo "na" > "$cap/run.rc"; : > "$cap/bytecode.txt"
+  fi
+
+  apoiador triage "$cap" "$DB"
+}
+
+cmd_triage() {
+  local name="${1:-}"; [ -n "$name" ] || die "triage needs a repro name"
+  apoiador triage "$REPROS/$name/.cap" "$DB"
+}
+
+cmd_issue() {
+  local name="${1:-}"; [ -n "$name" ] || die "issue needs a repro name"
+  local cap="$REPROS/$name/.cap"
+  [ -d "$cap" ] || die "no capture for $name - run it first"
+  apoiador issue "$cap" "$TPL"
+}
+
+# trim the captured bytecode down to one class before emitting the issue
+cmd_focus() {
+  local name="${1:-}" cls="${2:-}"
+  [ -n "$name" ] && [ -n "$cls" ] || die "focus needs <repro> <ClassName>"
+  local cap="$REPROS/$name/.cap"
+  [ -f "$cap/bytecode.txt" ] || die "no captured bytecode for $name"
+  awk -v c="// ===== $cls =====" '
+    $0==c {keep=1; print; next}
+    /^\/\/ ===== / {keep=0}
+    keep {print}' "$cap/bytecode.txt" > "$cap/bytecode.focus" \
+    || die "focus failed"
+  [ -s "$cap/bytecode.focus" ] || die "class $cls not found in capture"
+  mv "$cap/bytecode.focus" "$cap/bytecode.txt"
+  echo "bytecode narrowed to $cls"
+}
+
+cmd_stats() { apoiador stats "$DB"; }
+cmd_known() { apoiador known "$DB"; }
+
+# record a freshly filed issue so future runs dedup against it
+cmd_file() {
+  local sig="${1:-}" num="${2:-}"; shift 2 2>/dev/null
+  local title="${*:-}"
+  [ -n "$sig" ] && [ -n "$num" ] && [ -n "$title" ] || die "file needs <signature> <number> <title>"
+  printf '%s|%s|%s\n' "$sig" "$num" "$title" >> "$DB"
+  echo "recorded $sig -> #$num"
+}
+
+cmd_list() {
+  [ -d "$REPROS" ] || return 0
+  for d in "$REPROS"/*/; do
+    [ -d "$d" ] || continue
+    local n; n="$(basename "$d")"
+    if [ -f "$d/.cap/build.rc" ]; then
+      printf '  %-28s captured\n' "$n"
+    else
+      printf '  %-28s not run\n' "$n"
+    fi
+  done
+}
+
+usage() {
+  cat <<'USAGE'
+kofbug - driver for the Kof 0.4.2-beta bug hunt
+
+  new <name>              scaffold repros/<name>/main.kf
+  run <name>              build + run + javap, capture, triage
+  triage <name>           re-triage an existing capture
+  issue <name>            emit the 8-section issue skeleton
+  focus <name> <Class>    narrow captured bytecode to one class
+  list                    repros and whether they have been run
+  stats                   signature breakdown of filed issues
+  known                   list every filed issue
+  file <sig> <n> <title>  record a newly filed issue for dedup
+  build                   recompile the Kof apoiador
+
+The triage/issue/stats/known logic all lives in apoiador/main.kf (Kof).
+USAGE
+}
+
+case "${1:-}" in
+  new)    shift; cmd_new "$@" ;;
+  run)    shift; cmd_run "$@" ;;
+  triage) shift; cmd_triage "$@" ;;
+  issue)  shift; cmd_issue "$@" ;;
+  focus)  shift; cmd_focus "$@" ;;
+  list)   shift; cmd_list "$@" ;;
+  stats)  shift; cmd_stats "$@" ;;
+  known)  shift; cmd_known "$@" ;;
+  file)   shift; cmd_file "$@" ;;
+  build)  shift; cmd_build "$@" ;;
+  *)      usage ;;
+esac

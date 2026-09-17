@@ -1,0 +1,12 @@
+interface Converter<A, B> {
+    convert(input: A): B
+}
+class IntToString implements Converter<Int, String> {
+    convert(input: Int): String { return input.toString() }
+}
+main() {
+    val c: IntToString = IntToString()
+    println(c.convert(42))
+    val cv: Converter<Int, String> = c
+    println(cv.convert(99))
+}

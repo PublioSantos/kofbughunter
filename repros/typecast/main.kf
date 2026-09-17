@@ -1,0 +1,11 @@
+class Shape { }
+class Circle extends Shape {
+    radius: Int
+    constructor(r: Int) { radius = r }
+    area(): Double { return 3.14 * radius * radius }
+}
+main() {
+    val s: Shape = Circle(5)
+    val c: Circle = s as Circle
+    println(c.area())
+}

@@ -1,0 +1,9 @@
+class Handler {
+    (Int) -> String formatter
+    constructor(f: (Int) -> String) { formatter = f }
+    format(n: Int): String { return formatter(n) }
+}
+main() {
+    val h: Handler = Handler((n: Int) -> { return "value=" + n })
+    println(h.format(42))
+}

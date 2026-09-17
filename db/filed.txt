@@ -1,0 +1,48 @@
+SEM:SEM043|390|Abstract generic method override rejected when subclass substitutes concrete type for T
+SEM:SEM043|357|Interface default method body not recognized by type checker
+WRONGOUTPUT:SilentMismatch|391|Map.put()/Map.remove() replace null return with zero constant for primitive values
+WRONGOUTPUT:SilentMismatch|380|Map<K,Double>.get() absent key substitutes dconst_0 for null
+WRONGOUTPUT:SilentMismatch|383|Map<K,Bool>.get() absent key substitutes iconst_0 (false) for null
+WRONGOUTPUT:SilentMismatch|384|Map<K,Long>.get() absent key substitutes lconst_0 (0L) for null
+WRONGOUTPUT:SilentMismatch|376|Absent-key Map<K,Int>.get() auto-unboxing substitutes 0 for null
+WRONGOUTPUT:SilentMismatch|393|Nullable primitive fields Long?/Bool?/Double? compiled as primitives - null reads as zero
+WRONGOUTPUT:SilentMismatch|369|String interpolation ${expr} not evaluated - template printed literally
+WRONGOUTPUT:SilentMismatch|364|Triple-quoted string literal compiles to empty string
+WRONGOUTPUT:SilentMismatch|359|println(Char) prints integer code point instead of character
+WRONGOUTPUT:SilentMismatch|356|Char in string concatenation prints integer code point
+WRONGOUTPUT:SilentMismatch|378|Long? return type compiled as primitive - return null emits lconst_0
+WRONGOUTPUT:SilentMismatch|371|Int?/Bool? return type compiled as primitive - return null emits iconst_0
+SEM:SEM033|392|List.set() return type declared void - old element always discarded
+RUNTIME:VerifyError:bad-return-type|394|List.reduce() result missing checkcast before areturn in typed-return method
+RUNTIME:BadMainClass|397|Local variable named args in main() generates aload_0 instead of aload_1
+RUNTIME:VerifyError:*|388|Calling a function-type instance field generates phantom invokestatic
+RUNTIME:VerifyError:*|381|Lambda returned from class method capturing instance field
+RUNTIME:VerifyError:*|370|Int? nullable field and constructor parameter compiled as primitive int
+RUNTIME:VerifyError:*|365|Bridge method for generic override with primitive return type missing boxing
+RUNTIME:VerifyError:*|355|Non-null static field initializer emitted before super() in <init>
+SEM:SEM021|395|List.reduce() with cross-type accumulator infers element type as return type
+SEM:SEM014|396|Generic class method with function-type parameter does not substitute class type args
+SEM:SEM013|389|Multi-parameter function type with function-type params misparses as 1-arg
+SEM:SEM025|386|Map missing containsValue(), getOrDefault(), putIfAbsent()
+SEM:SEM025|382|List missing sort(), indexOf(), lastIndexOf(), subList(), addAll()
+SEM:SEM011|374|List<FunctionType> rejected as class field type and function parameter type
+SEM:SEM027|367|Named-argument call syntax f(param = value) not recognized
+ICE:COMP002|398|Nullable primitive parameters Long?/Double?/Bool? compiled as primitives
+ICE:COMP002|373|Nested generic type with 2+ inner type args crashes Type.of()
+ICE:COMP002|361|List.reduce() with explicitly-typed lambda parameters crashes compiler
+RUNTIME:NoClassDefFoundError|399|Generic method returning T emits checkcast T using literal type-var name
+RUNTIME:NoClassDefFoundError|363|Generic method List<T>.get() result emits checkcast T
+RUNTIME:NoClassDefFoundError|375|Bounded type parameter field access emits getfield "?".field
+RUNTIME:NoClassDefFoundError|377|Bounded type parameter field access emits getfield "?"
+RUNTIME:NoSuchMethodError|385|Generic interface method descriptor emits LT; instead of erasing to Object
+RUNTIME:ClassFormatError|368|Method call on generic function parameter T emits invokevirtual "".method
+RUNTIME:ClassFormatError|362|Built-in methods on primitive types emit empty owner class "" in Methodref
+RUNTIME:ClassFormatError|354|Method call on generic-type field emits empty class name "" in Methodref
+RUNTIME:IncompatibleClassChangeError|366|Class implementing generic interface emits extends instead of implements
+RUNTIME:ClassCastException|360|listOf() with heterogeneous subtypes infers checkcast from first element
+SEM:SEM021|372|String.split() return type is String[] not List<String>
+PARSE:PARSE041|379|operator+ method declaration triggers infinite recursion in TypeParser
+SEM:SEM021|400|SEM021 false positive: concrete class not assignable to its implemented generic interface type
+RUNTIME:ClassCastException|401|Generic type arguments not verified — List<Int> silently assigned to List<String>, ClassCastException at runtime
+RUNTIME:VerifyError:bad-return-type|402|Function-type field called from typed-return method emits phantom static dispatch → VerifyError: Bad return type
+RUNTIME:VerifyError:stack-underflow|403|Field named 'log' causes all method bodies in the same class to be silently dropped

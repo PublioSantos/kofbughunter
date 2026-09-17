@@ -1,0 +1,313 @@
+class Verdict {
+    String kind
+    String code
+    String detail
+    constructor(k: String, c: String, d: String) { kind = k; code = c; detail = d }
+    signature(): String {
+        if (code == "") { return kind }
+        // the VerifyError reason is the real discriminator; without it every
+        // backend fault collapses into one bucket and dedup stops being useful
+        if (code == "VerifyError") { return kind + ":" + code + ":" + detail }
+        return kind + ":" + code
+    }
+}
+
+readAll(p: String): String {
+    var txt = File(p).readText()
+    if (txt != null) { return txt }
+    return ""
+}
+
+readLines(p: String): List<String> {
+    val out: List<String> = listOf()
+    var txt = File(p).readText()
+    if (txt != null) {
+        val parts: String[] = txt.split("\n")
+        for (var x in parts) { out.add(x) }
+    }
+    return out
+}
+
+charAtStr(s: String, i: Int): String {
+    return s.substring(i, i + 1)
+}
+
+extractBracketCode(line: String): String {
+    var open: Int = 0 - 1
+    var i: Int = 0
+    while (i < line.length()) {
+        if (charAtStr(line, i) == "[") { open = i }
+        i = i + 1
+    }
+    if (open < 0) { return "" }
+    var j: Int = open + 1
+    while (j < line.length()) {
+        if (charAtStr(line, j) == "]") { return line.substring(open + 1, j) }
+        j = j + 1
+    }
+    return ""
+}
+
+afterMarker(line: String, marker: String): String {
+    val at: Int = line.indexOf(marker)
+    if (at < 0) { return "" }
+    return line.substring(at + marker.length(), line.length()).trim()
+}
+
+classify(buildTxt: String, runTxt: String, expected: String): Verdict {
+    if (buildTxt.contains("COMP002")) {
+        return Verdict("ICE", "COMP002", "compiler crash in JVM backend")
+    }
+    val buildLines: List<String> = listOf()
+    val bparts: String[] = buildTxt.split("\n")
+    for (var b in bparts) { buildLines.add(b) }
+    for (var line in buildLines) {
+        if (line.contains("error:")) {
+            val code: String = extractBracketCode(line)
+            if (code != "") {
+                var kind: String = "SEM"
+                if (code.startsWith("PARSE")) { kind = "PARSE" }
+                if (code.startsWith("LEX")) { kind = "LEX" }
+                if (code.startsWith("PKG")) { kind = "PKG" }
+                return Verdict(kind, code, line.trim())
+            }
+        }
+    }
+    if (runTxt.contains("VerifyError")) {
+        // the JVM's headline reason is the discriminator; the explanatory lines
+        // below it ("not assignable") repeat across unrelated faults
+        var reason: String = "unspecified"
+        if (runTxt.contains("not assignable")) { reason = "bad-assignability" }
+        if (runTxt.contains("Inconsistent stackmap")) { reason = "inconsistent-stackmap" }
+        if (runTxt.contains("Bad type on operand stack")) { reason = "bad-operand-type" }
+        if (runTxt.contains("Operand stack underflow")) { reason = "stack-underflow" }
+        if (runTxt.contains("Attempt to pop empty stack")) { reason = "stack-underflow" }
+        if (runTxt.contains("Bad return type")) { reason = "bad-return-type" }
+        return Verdict("RUNTIME", "VerifyError", reason)
+    }
+    if (runTxt.contains("NoClassDefFoundError")) {
+        return Verdict("RUNTIME", "NoClassDefFoundError", afterMarker(runTxt, "NoClassDefFoundError:"))
+    }
+    if (runTxt.contains("NoSuchMethodError")) {
+        return Verdict("RUNTIME", "NoSuchMethodError", afterMarker(runTxt, "NoSuchMethodError:"))
+    }
+    if (runTxt.contains("ClassCastException")) {
+        return Verdict("RUNTIME", "ClassCastException", "generic type args not enforced")
+    }
+    if (runTxt.contains("ClassFormatError")) {
+        return Verdict("RUNTIME", "ClassFormatError", afterMarker(runTxt, "ClassFormatError:"))
+    }
+    if (runTxt.contains("IncompatibleClassChangeError")) {
+        return Verdict("RUNTIME", "IncompatibleClassChangeError", "")
+    }
+    if (runTxt.contains("AbstractMethodError")) {
+        return Verdict("RUNTIME", "AbstractMethodError", "")
+    }
+    if (runTxt.contains("IllegalAccessError")) {
+        return Verdict("RUNTIME", "IllegalAccessError", "")
+    }
+    if (runTxt.contains("InstantiationError")) {
+        return Verdict("RUNTIME", "InstantiationError", "")
+    }
+    // the launcher reports a malformed/missing main(String[]) as a JavaFX problem,
+    // in whatever locale the JDK is running; match the stable tokens, not the prose
+    val lower: String = runTxt.toLowerCase()
+    if (lower.contains("javafx")) {
+        return Verdict("RUNTIME", "BadMainClass", "launcher rejected Default.Main - main(String[]) missing or malformed")
+    }
+    if (lower.contains("classnotfoundexception")) {
+        return Verdict("RUNTIME", "NoMainClass", "Default.Main absent - build produced no entry class")
+    }
+    if (buildTxt.contains("error:")) {
+        return Verdict("BUILD", "uncoded", "compile error without a bracket code")
+    }
+    if (expected.trim() != "") {
+        if (runTxt.trim() != expected.trim()) {
+            return Verdict("WRONGOUTPUT", "SilentMismatch", "compiles and runs, but output differs from expected")
+        }
+    }
+    return Verdict("CLEAN", "", "compiled and ran without a detected fault")
+}
+
+diffReport(runTxt: String, expected: String) {
+    val exp: List<String> = listOf()
+    val got: List<String> = listOf()
+    val eparts: String[] = expected.trim().split("\n")
+    for (var e in eparts) { exp.add(e) }
+    val gparts: String[] = runTxt.trim().split("\n")
+    for (var g in gparts) { got.add(g) }
+    var n: Int = exp.size()
+    if (got.size() > n) { n = got.size() }
+    println("")
+    println("line   expected                       actual")
+    var i: Int = 0
+    while (i < n) {
+        var e: String = "<missing>"
+        var g: String = "<missing>"
+        if (i < exp.size()) { e = exp.get(i) }
+        if (i < got.size()) { g = got.get(i) }
+        var mark: String = "  "
+        if (e != g) { mark = "->" }
+        println(mark + pad("" + (i + 1), 5) + pad(e, 31) + g)
+        i = i + 1
+    }
+}
+
+dedupLookup(dbPath: String, sig: String): List<String> {
+    val hits: List<String> = listOf()
+    val lines: List<String> = readLines(dbPath)
+    for (var line in lines) {
+        if (line.startsWith(sig + "|")) { hits.add(line) }
+    }
+    if (hits.size() > 0) { return hits }
+    // a db entry may end in ":*" when the exact discriminator was never recorded
+    for (var line in lines) {
+        val star: Int = line.indexOf(":*|")
+        if (star > 0) {
+            val prefix: String = line.substring(0, star)
+            if (sig.startsWith(prefix + ":")) { hits.add(line) }
+        }
+    }
+    return hits
+}
+
+fieldAt(line: String, want: Int): String {
+    var idx: Int = 0
+    var start: Int = 0
+    var i: Int = 0
+    while (i < line.length()) {
+        if (charAtStr(line, i) == "|") {
+            if (idx == want) { return line.substring(start, i) }
+            idx = idx + 1
+            start = i + 1
+        }
+        i = i + 1
+    }
+    if (idx == want) { return line.substring(start, line.length()) }
+    return ""
+}
+
+pad(s: String, n: Int): String {
+    var out: String = s
+    while (out.length() < n) { out = out + " " }
+    // guarantee a separator even when the value overflows the column
+    if (out.length() >= n) { out = out + " " }
+    return out
+}
+
+cmdTriage(capDir: String, dbPath: String) {
+    val buildTxt: String = readAll(capDir + "/build.txt")
+    val runTxt: String = readAll(capDir + "/run.txt")
+    val expected: String = readAll(capDir + "/expected.txt")
+    val v: Verdict = classify(buildTxt, runTxt, expected)
+    val sig: String = v.signature()
+    println("== kofbug triage ==")
+    println("capture   : " + capDir)
+    println("kind      : " + v.kind)
+    println("code      : " + v.code)
+    println("detail    : " + v.detail)
+    println("signature : " + sig)
+    if (v.kind == "CLEAN") {
+        println("verdict   : NO FAULT DETECTED - not a bug candidate")
+        return
+    }
+    if (v.kind == "WRONGOUTPUT") { diffReport(runTxt, expected) ; println("") }
+    val hits: List<String> = dedupLookup(dbPath, sig)
+    if (hits.size() == 0) {
+        println("dedup     : NOVEL - no filed issue carries this signature")
+        println("verdict   : CANDIDATE - needs root-cause analysis")
+        return
+    }
+    println("dedup     : " + hits.size() + " filed issue(s) share this signature")
+    for (var h in hits) {
+        println("            #" + fieldAt(h, 1) + "  " + fieldAt(h, 2))
+    }
+    println("verdict   : LIKELY DUPLICATE - confirm the mechanism differs before filing")
+}
+
+cmdIssue(capDir: String, tplPath: String) {
+    val repro: String = readAll(capDir + "/main.kf")
+    val expected: String = readAll(capDir + "/expected.txt")
+    val actualBuild: String = readAll(capDir + "/build.txt")
+    val actualRun: String = readAll(capDir + "/run.txt")
+    val bytecode: String = readAll(capDir + "/bytecode.txt")
+    var actual: String = actualRun
+    if (actualRun.trim() == "") { actual = actualBuild }
+    if (actualBuild.contains("error:")) { actual = actualBuild }
+    var tpl: String = readAll(tplPath)
+    tpl = tpl.replace("@@REPRO@@", repro.trim())
+    tpl = tpl.replace("@@EXPECTED@@", expected.trim())
+    tpl = tpl.replace("@@ACTUAL@@", actual.trim())
+    tpl = tpl.replace("@@BYTECODE@@", bytecode.trim())
+    println(tpl)
+}
+
+cmdStats(dbPath: String) {
+    val lines: List<String> = readLines(dbPath)
+    val sigs: List<String> = listOf()
+    var filed: Int = 0
+    for (var line in lines) {
+        if (line.trim() != "") {
+            filed = filed + 1
+            val s: String = fieldAt(line, 0)
+            if (sigs.contains(s) == false) { sigs.add(s) }
+        }
+    }
+    println("== kofbug stats ==")
+    println("filed issues     : " + filed)
+    println("distinct signatures : " + sigs.size())
+    println("")
+    println("signature breakdown:")
+    for (var s in sigs) {
+        var n: Int = 0
+        for (var line in lines) {
+            if (line.startsWith(s + "|")) { n = n + 1 }
+        }
+        println("  " + pad(s, 34) + n)
+    }
+}
+
+cmdKnown(dbPath: String) {
+    val lines: List<String> = readLines(dbPath)
+    println("== filed issues ==")
+    for (var line in lines) {
+        if (line.trim() != "") {
+            println("  #" + pad(fieldAt(line, 1), 6) + pad(fieldAt(line, 0), 30) + fieldAt(line, 2))
+        }
+    }
+}
+
+usage() {
+    println("kofbug apoiador - mechanical support for the Kof bug hunt")
+    println("")
+    println("  triage <capdir> <db>        classify a captured run and dedup it")
+    println("  issue  <capdir> <template>  emit the 8-section issue skeleton")
+    println("  stats  <db>                 signature breakdown of filed issues")
+    println("  known  <db>                 list every filed issue")
+}
+
+main(argv: String[]) {
+    if (argv.length == 0) { usage(); return }
+    val cmd: String = argv[0]
+    if (cmd == "triage") {
+        if (argv.length < 3) { println("triage needs <capdir> <db>"); return }
+        cmdTriage(argv[1], argv[2])
+        return
+    }
+    if (cmd == "issue") {
+        if (argv.length < 3) { println("issue needs <capdir> <template>"); return }
+        cmdIssue(argv[1], argv[2])
+        return
+    }
+    if (cmd == "stats") {
+        if (argv.length < 2) { println("stats needs <db>"); return }
+        cmdStats(argv[1])
+        return
+    }
+    if (cmd == "known") {
+        if (argv.length < 2) { println("known needs <db>"); return }
+        cmdKnown(argv[1])
+        return
+    }
+    usage()
+}

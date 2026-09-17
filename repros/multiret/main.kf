@@ -1,0 +1,10 @@
+divide(a: Int, b: Int): Int? {
+    if (b == 0) { return null }
+    return a / b
+}
+main() {
+    val r1: Int? = divide(10, 2)
+    val r2: Int? = divide(10, 0)
+    if (r1 != null) { println(r1) }
+    if (r2 == null) { println("division by zero") }
+}

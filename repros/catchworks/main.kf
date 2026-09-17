@@ -1,0 +1,13 @@
+divide(a: Int, b: Int): Int {
+    if (b == 0) {
+        throw Exception("division by zero")
+    }
+    return a / b
+}
+main() {
+    try {
+        println(divide(10, 0))
+    } catch (Exception e) {
+        println("caught: " + e.message)
+    }
+}

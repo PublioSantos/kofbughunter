@@ -1,0 +1,7 @@
+main() {
+    val s: String = "hello world"
+    println(s.toUpperCase())
+    println(s.replace("world", "kof"))
+    println(s.startsWith("hello"))
+    println(s.endsWith("world"))
+}
