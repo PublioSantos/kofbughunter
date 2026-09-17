@@ -1,0 +1,5 @@
+main() {
+    var nums = listOf(1, 2, 3)
+    var strs = nums.map((x: Int) -> "n" + x)
+    println(strs.get(0))
+}

@@ -1,0 +1,7 @@
+main() {
+    var nomes = listOf("Ana", "Bob", "Carlos")
+    var maiusculos = nomes.map((nome: String) -> nome.toUpperCase())
+    println(maiusculos.get(0))
+    var longos = nomes.filter((nome: String) -> nome.length > 3)
+    println(longos.size())
+}

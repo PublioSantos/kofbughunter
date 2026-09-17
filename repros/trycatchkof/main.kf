@@ -1,0 +1,9 @@
+main() {
+    try {
+        throw "boom"
+    } catch (Exception e) {
+        println("caught")
+    } finally {
+        println("done")
+    }
+}

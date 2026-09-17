@@ -167,6 +167,12 @@ cmd_upgrade() {
 # with dozens of repros does not hit the release API on every single run.
 auto_check() {
   [ -n "${KOFBUG_NO_UPDATE:-}" ] && return 0
+  # A source build of beta-0.4.0 always carries a LOWER version string than the
+  # newest release (the branch is ahead, the tag is not), so the plain version
+  # compare below would "upgrade" it straight back to the release and silently
+  # re-introduce every bug the branch already fixed. The pin marker is what
+  # keeps a hunt honest: the branch is the reference, never the tag.
+  [ -f "$KOFHOME/.source-build" ] && return 0
   command -v gh >/dev/null 2>&1 || return 0
   if [ -f "$STAMP" ]; then
     local age=$(( $(date +%s) - $(cat "$STAMP" 2>/dev/null || echo 0) ))
@@ -226,6 +232,72 @@ cmd_baseline() {
   echo "baseline frozen for $n repros at kof $(installed_version)"
 }
 
+# Build beta-0.4.0 from a Kof4j checkout and pin the toolchain to it. Hunting
+# against the release tag reports bugs the branch already fixed, so the branch
+# is the only honest reference for "is this still broken".
+cmd_tip() {
+  local src="${1:-}"
+  [ -n "$src" ] || die "tip needs the path to a Kof4j checkout"
+  [ -d "$src/.git" ] || die "$src is not a git repo"
+  local jdk="$KOFROOT/kof-0.4.2-beta-$PLATFORM/jdk"
+  [ -x "$jdk/bin/java" ] || die "no JDK found at $jdk"
+  echo "kofbug tip: building $src ..."
+  JAVA_HOME="$jdk" mvn -q -o -f "$src/pom.xml" clean package -DskipTests \
+    || die "mvn build failed"
+  JAVA_HOME="$jdk" bash "$src/scripts/package.sh" --skip-build >/dev/null 2>&1 \
+    || die "package.sh failed"
+  local built; built="$(find "$src/dist" -maxdepth 1 -type d -name "kof-*-$PLATFORM" | head -1)"
+  [ -n "$built" ] || die "no packaged toolchain under $src/dist"
+  rm -rf "$KOFROOT/kof-beta-tip"
+  cp -r "$built" "$KOFROOT/kof-beta-tip"
+  ln -sfn "../kof-0.4.2-beta-$PLATFORM/jdk" "$KOFROOT/kof-beta-tip/jdk"
+  # the marker auto_check reads, so the release tag can never overwrite this
+  git -C "$src" rev-parse --short HEAD > "$KOFROOT/kof-beta-tip/.source-build"
+  ln -sfn kof-beta-tip "$KOFROOT/current"
+  echo "kofbug tip: pinned to $(cat "$KOFROOT/kof-beta-tip/VERSION") @ $(cat "$KOFROOT/kof-beta-tip/.source-build")"
+}
+
+# Forms that are NOT Kof. Every one of these already produced a false issue:
+# the bot wrote Kotlin/Java, the compiler refused it correctly, and the refusal
+# got filed as a bug. Worse, filed issues pulled the Kof agent toward
+# IMPLEMENTING them - so a bad repro does not just waste triage, it drifts the
+# language. Source of truth = training/ + learn/ + docs/ in the Kof4j repo.
+lint_repro() {
+  local f="$1" bad=0
+  check() {
+    grep -nE "$1" "$f" >/dev/null 2>&1 || return 0
+    printf '  %-22s %s\n' "$2" "$3" >&2; bad=1
+  }
+  check '(^|[^A-Za-z_])val[[:space:]]+[A-Za-z_]' 'val' 'use var (maintainer: val is not for declarations)'
+  check '\bStringBuilder\b'          'StringBuilder' 'Java class; Kof has no StringBuilder'
+  check '\bMath\.'                   'Math.'         'Java class; Kof has math.* (kof.math)'
+  check '\bmutableListOf\b'          'mutableListOf' 'Kotlin; listOf() is already mutable'
+  check '\bPair[<(]'                 'Pair'          'Kotlin; declare record Pair(K first, V second)'
+  check '\{[[:space:]]*it[[:space:]]' 'it'           'Kotlin implicit lambda; Kof uses (x: T) -> expr'
+  check '\.(any|all|none|sorted)\('  'any/all/none'  'Kotlin extensions; not Kof List methods'
+  check '\?:'                        '?:'            'elvis does not exist (grammar 5.3)'
+  check '\?\.'                       '?.'            'safe-call does not exist; ? is a type suffix'
+  check '!!'                         '!!'            'non-null assertion does not exist'
+  check '[0-9A-Za-z_)]\.\.[0-9A-Za-z_(]' '..'        'range operator does not exist (grammar 5.3)'
+  check '(^|[^A-Za-z_])is[[:space:]]+[A-Z]' 'is'     'use instanceof (is is not a Kof operator)'
+  check '(^|[^A-Za-z_])object[[:space:]]+[A-Z]' 'object' 'Kotlin declaration; not a Kof type'
+  check '(^|[^A-Za-z_])open[[:space:]]+class' 'open' 'not a Kof modifier'
+  check '\$\{'                       '${}'           'no string interpolation (lexical 4.1)'
+  check '"""'                        '"""'           'no triple-quoted string (lexical 4.1)'
+  return $bad
+}
+
+cmd_lint() {
+  local name="${1:-}"; [ -n "$name" ] || die "lint needs a repro name"
+  local f="$REPROS/$name/main.kf"
+  [ -f "$f" ] || die "no such repro: $name"
+  if lint_repro "$f"; then
+    echo "kofbug lint: $name uses only native Kof forms"
+  else
+    die "$name uses non-Kof forms (see above) - fix the repro, it is not a bug"
+  fi
+}
+
 cmd_new() {
   local name="${1:-}"; [ -n "$name" ] || die "new needs a name"
   local d="$REPROS/$name"
@@ -245,6 +317,13 @@ cmd_run() {
   local name="${1:-}"; [ -n "$name" ] || die "run needs a repro name"
   local d="$REPROS/$name"
   [ -d "$d" ] || die "no such repro: $name"
+  # Gate BEFORE the compiler: a repro written in Kotlin/Java is not a bug
+  # report, it is a broken repro. Catching it here is what stops it becoming
+  # an issue - and stops the issue drifting the language.
+  if ! lint_repro "$d/main.kf"; then
+    die "$name uses non-Kof forms (see above) - fix the repro, it is not a bug"
+  fi
+
   local cap="$d/.cap"
   rm -rf "$cap" "$d/build"; mkdir -p "$cap"
 
@@ -438,7 +517,9 @@ usage() {
   cat <<'USAGE'
 
   new <name>              scaffold repros/<name>/main.kf
-  run <name>              build + run + javap, capture, triage
+  lint <name>             reject non-Kof forms (Kotlin/Java) before they become issues
+  tip <kof4j-dir>         build beta-0.4.0 from source and pin the toolchain to it
+  run <name>              lint + build + run + javap, capture, triage
   triage <name>           re-triage an existing capture
   issue <name>            emit the 8-section issue skeleton
   focus <name> <Class>    narrow captured bytecode to one class
@@ -453,9 +534,17 @@ usage() {
   regress                 re-run every repro; report what moved vs. baseline
   baseline                freeze the current verdicts as the new baseline
 
+Hunt against the BRANCH, not the release tag: `tip <kof4j-dir>` builds
+beta-0.4.0 and pins to it, and the pin survives the auto-update (the branch
+version reads lower than the newest tag, so a plain compare would downgrade it
+and resurrect every bug the branch already fixed).
+
 Every command that invokes the compiler checks the release feed first (once a
-day); an outdated toolchain is upgraded automatically. Set KOFBUG_NO_UPDATE=1
-to pin the current version.
+day); an outdated toolchain is upgraded automatically, EXCEPT when pinned to a
+source build. Set KOFBUG_NO_UPDATE=1 to pin the current version.
+
+Repros must use only native Kof. `run` lints first and refuses Kotlin/Java
+forms — a repro the compiler rightly rejects is a broken repro, not a bug.
 
 The triage/issue/stats/known/vercmp logic all lives in apoiador/main.kf (Kof).
 USAGE
@@ -463,6 +552,8 @@ USAGE
 
 case "${1:-}" in
   new)    shift; cmd_new "$@" ;;
+  lint)   shift; cmd_lint "$@" ;;
+  tip)    shift; cmd_tip "$@" ;;
   run)    shift; auto_check; cmd_run "$@" ;;
   triage) shift; cmd_triage "$@" ;;
   issue)  shift; cmd_issue "$@" ;;

@@ -1,0 +1,10 @@
+class Box<T> {
+    T value
+    constructor(T v) { this.value = v }
+    get(): T { return this.value }
+}
+
+main() {
+    var b = new Box<String>("hi")
+    println(b.get())
+}

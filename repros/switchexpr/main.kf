@@ -1,0 +1,9 @@
+main() {
+    var n = 2
+    var s = switch (n) {
+        case 1 -> "one"
+        case 2 -> "two"
+        default -> "many"
+    }
+    println(s)
+}

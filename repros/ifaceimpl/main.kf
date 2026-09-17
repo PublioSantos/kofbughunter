@@ -1,0 +1,12 @@
+interface Greeter {
+    greet(): String
+}
+
+class English implements Greeter {
+    greet(): String { return "Hello" }
+}
+
+main() {
+    var g = new English()
+    println(g.greet())
+}

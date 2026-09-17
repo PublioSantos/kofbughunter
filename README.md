@@ -125,6 +125,51 @@ No índice (`db/filed.txt`), uma entrada pode terminar em `:*` para correspondê
 
 ---
 
+## Fonte da verdade / Source of truth
+
+**[PT]** Antes de escrever qualquer repro, a forma se confere no **corpus estável**
+do repositório Kof4j — `training/` + `learn/` + `docs/`. Uma forma que não está lá
+não é Kof, e o compilador recusá-la não é bug.
+
+**[EN]** Before writing any reproducer, the form is checked against the **stable
+corpus** in the Kof4j repo — `training/` + `learn/` + `docs/`. A form that is not
+there is not Kof, and the compiler rejecting it is not a bug.
+
+| Documento / Document | O que responde / What it answers |
+|---|---|
+| `docs/language-reference/grammar.md` §5.3 | operadores que **não existem** / operators that do **not** exist |
+| `docs/language-reference/lexical-structure.md` §1.1 | keywords exaustivas / exhaustive keyword list |
+| `docs/bugs-and-gaps/known-bugs.md` | bugs já conhecidos + §"behaviors that LOOK like bugs but are expected" |
+| `docs/bugs-and-gaps/specification-gaps.md` | SG-001–020: ausências **por design** / absences **by design** |
+| `docs/development/` | em desenvolvimento / in development |
+| `docs/development/future/` | só plano, zero código / plan only, zero code |
+
+**[PT]** Duas regras que valem mais que qualquer heurística:
+
+**[EN]** Two rules that outrank every heuristic:
+
+1. **Se não for nativo do Kof, não usar.** Uma issue falsa não é só ruído de
+   triagem — ela puxa o agente do Kof a *implementar* a API inventada.
+   *If it is not native Kof, do not use it. A false issue does not just waste
+   triage — it pulls the Kof agent toward implementing the invented API.*
+2. **Caçar contra o branch `beta-0.4.0`, nunca contra a tag de release.** O branch
+   está à frente; contra a tag, tudo que já foi corrigido reaparece como bug novo.
+   *Hunt against the `beta-0.4.0` branch, never the release tag.*
+
+```bash
+./kofbug tip ~/Downloads/Kof4j   # compila o branch e fixa o toolchain nele
+./kofbug lint meurepro           # recusa formas Kotlin/Java antes de virarem issue
+```
+
+`run` já faz o lint sozinho. O pin sobrevive ao auto-update: a versão do branch
+é *menor* que a da tag mais nova, então sem o marcador o comparador faria
+downgrade e ressuscitaria todos os bugs já corrigidos.
+*`run` lints on its own. The pin survives auto-update: the branch version reads
+lower than the newest tag, so without the marker the comparator would downgrade
+and resurrect every already-fixed bug.*
+
+---
+
 ## Bugs do Kof evitados no apoiador / Kof bugs deliberately avoided in the tool
 
 **[PT]** O apoiador evita deliberadamente tudo que já se sabe quebrado — senão ele mesmo não compila.

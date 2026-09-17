@@ -1,0 +1,7 @@
+main() {
+    var l = listOf(1, 2, 3, 4)
+    println(l.size())
+    println(l.get(0))
+    println(l.contains(3))
+    println(l.isEmpty())
+}

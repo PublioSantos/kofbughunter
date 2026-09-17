@@ -1,0 +1,8 @@
+record User(String name, Int age)
+
+main() {
+    var users = listOf(User("Ana", 26), User("Bob", 31))
+    var nomes = users.map((u: User) -> u.name())
+    println(nomes.get(0))
+    println(nomes.get(1))
+}

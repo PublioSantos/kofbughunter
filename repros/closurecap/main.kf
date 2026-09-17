@@ -1,0 +1,5 @@
+main() {
+    var fator = 3
+    var mult = (x: Int) -> x * fator
+    println(mult(5))
+}
