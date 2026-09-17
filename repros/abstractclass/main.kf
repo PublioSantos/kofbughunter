@@ -8,7 +8,7 @@ class Square extends Drawable {
     draw(): String { return "a square with side " + side }
 }
 main() {
-    val sq: Square = Square(5)
+    var sq: Square = Square(5)
     println(sq.draw())
     println(sq.describe())
 }

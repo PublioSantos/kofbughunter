@@ -16,7 +16,7 @@ class Word(val text: String): Printable, Countable {
 }
 
 main() {
-    val w: Word = Word("hello")
+    var w: Word = Word("hello")
     w.print()
     println(w.count())
 }

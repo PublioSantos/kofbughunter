@@ -1,6 +1,6 @@
 main() {
-    val m: Map<String, Int> = mapOf()
+    var m: Map<String, Int> = mapOf()
     m.put("x", 1)
-    val missing: Int? = m.get("zzz")
+    var missing: Int? = m.get("zzz")
     println(missing)
 }

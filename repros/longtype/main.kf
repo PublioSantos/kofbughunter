@@ -1,5 +1,5 @@
 main() {
-    val n: Long = 3000000000L
-    val m: Long = n + 1L
+    var n: Long = 3000000000L
+    var m: Long = n + 1L
     println(m)
 }

@@ -1,5 +1,5 @@
 main() {
-    val n: Int? = 42
-    val x: Int = n!!
+    var n: Int? = 42
+    var x: Int = n!!
     println(x)
 }

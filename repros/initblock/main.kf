@@ -6,6 +6,6 @@ class Counter(start: Int) {
 }
 
 main() {
-    val c: Counter = Counter(5)
+    var c: Counter = Counter(5)
     println(c.value)
 }

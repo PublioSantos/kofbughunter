@@ -8,8 +8,8 @@ class Dog extends Animal {
     speak(): String { return name + " barks" }
 }
 main() {
-    val d: Dog = Dog("Rex")
+    var d: Dog = Dog("Rex")
     println(d.speak())
-    val a: Animal = d
+    var a: Animal = d
     println(a.speak())
 }

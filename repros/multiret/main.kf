@@ -3,8 +3,8 @@ divide(a: Int, b: Int): Int? {
     return a / b
 }
 main() {
-    val r1: Int? = divide(10, 2)
-    val r2: Int? = divide(10, 0)
+    var r1: Int? = divide(10, 2)
+    var r2: Int? = divide(10, 0)
     if (r1 != null) { println(r1) }
     if (r2 == null) { println("division by zero") }
 }

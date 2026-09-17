@@ -1,6 +1,6 @@
 main() {
-    val nums: List<Int> = listOf()
+    var nums: List<Int> = listOf()
     nums.add(1)
-    val strs: List<String> = nums
+    var strs: List<String> = nums
     println(strs.get(0))
 }

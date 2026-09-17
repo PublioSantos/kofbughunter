@@ -1,12 +1,12 @@
 interface Named {
-    val name: String
+    var name: String
 }
 
 class Person(n: String): Named {
-    val name: String = n
+    var name: String = n
 }
 
 main() {
-    val p: Person = Person("Alice")
+    var p: Person = Person("Alice")
     println(p.name)
 }

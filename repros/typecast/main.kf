@@ -5,7 +5,7 @@ class Circle extends Shape {
     area(): Double { return 3.14 * radius * radius }
 }
 main() {
-    val s: Shape = Circle(5)
-    val c: Circle = s as Circle
+    var s: Shape = Circle(5)
+    var c: Circle = s as Circle
     println(c.area())
 }

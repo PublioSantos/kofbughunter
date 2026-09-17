@@ -1,8 +1,8 @@
 main() {
-    val nums: List<Int> = listOf()
+    var nums: List<Int> = listOf()
     nums.add(1)
     nums.add(2)
     nums.add(3)
-    val doubled: List<Int> = nums.map((x: Int) -> { return x * 2 })
+    var doubled: List<Int> = nums.map((x: Int) -> { return x * 2 })
     for (var n in doubled) { println(n) }
 }

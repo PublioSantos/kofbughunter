@@ -9,6 +9,6 @@ class Square(side: Int): Shape {
 }
 
 main() {
-    val s: Square = Square(4)
+    var s: Square = Square(4)
     println(s.area())
 }

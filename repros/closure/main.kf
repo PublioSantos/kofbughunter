@@ -6,7 +6,7 @@ makeCounter(start: Int): () -> Int {
     }
 }
 main() {
-    val counter: () -> Int = makeCounter(0)
+    var counter: () -> Int = makeCounter(0)
     println(counter())
     println(counter())
     println(counter())

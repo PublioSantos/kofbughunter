@@ -1,5 +1,5 @@
 main() {
-    val xs: List<Int> = listOf(1, 2, 3, 4, 5)
+    var xs: List<Int> = listOf(1, 2, 3, 4, 5)
     println(xs.any { it > 3 })
     println(xs.all { it > 0 })
     println(xs.none { it > 10 })

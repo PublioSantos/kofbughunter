@@ -6,8 +6,8 @@ class Vec2 {
     toString(): String { return "(" + x + "," + y + ")" }
 }
 main() {
-    val a: Vec2 = Vec2(1, 2)
-    val b: Vec2 = Vec2(3, 4)
-    val c: Vec2 = a.plus(b)
+    var a: Vec2 = Vec2(1, 2)
+    var b: Vec2 = Vec2(3, 4)
+    var c: Vec2 = a.plus(b)
     println(c.toString())
 }

@@ -1,5 +1,5 @@
 main() {
-    val p: Pair<String, Int> = Pair("age", 42)
+    var p: Pair<String, Int> = Pair("age", 42)
     println(p.first)
     println(p.second)
 }

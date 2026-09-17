@@ -19,10 +19,10 @@ readAll(p: String): String {
 }
 
 readLines(p: String): List<String> {
-    val out: List<String> = listOf()
+    var out: List<String> = listOf()
     var txt = File(p).readText()
     if (txt != null) {
-        val parts: String[] = txt.split("\n")
+        var parts: String[] = txt.split("\n")
         for (var x in parts) { out.add(x) }
     }
     return out
@@ -35,7 +35,7 @@ charAtStr(s: String, i: Int): String {
 // hand-rolled split: String.split() takes a regex upstream, and "." is exactly
 // the separator a version string needs
 splitOn(s: String, sep: String): List<String> {
-    val out: List<String> = listOf()
+    var out: List<String> = listOf()
     var rest: String = s
     var at: Int = rest.indexOf(sep)
     while (at >= 0) {
@@ -48,7 +48,7 @@ splitOn(s: String, sep: String): List<String> {
 }
 
 rankOf(c: String): Int {
-    val alphabet: String = "0123456789abcdefghijklmnopqrstuvwxyz"
+    var alphabet: String = "0123456789abcdefghijklmnopqrstuvwxyz"
     return alphabet.indexOf(c)
 }
 
@@ -56,8 +56,8 @@ lexCmp(a: String, b: String): Int {
     var i: Int = 0
     while (i < a.length()) {
         if (i >= b.length()) { return 1 }
-        val ca: String = charAtStr(a, i)
-        val cb: String = charAtStr(b, i)
+        var ca: String = charAtStr(a, i)
+        var cb: String = charAtStr(b, i)
         if (ca != cb) {
             if (rankOf(ca) > rankOf(cb)) { return 1 }
             return 0 - 1
@@ -81,28 +81,28 @@ stripZeros(s: String): String {
 // the longer digit string is always the larger number (so 10 > 2, which a plain
 // string compare gets wrong)
 cmpNumeric(a: String, b: String): Int {
-    val na: String = stripZeros(a)
-    val nb: String = stripZeros(b)
+    var na: String = stripZeros(a)
+    var nb: String = stripZeros(b)
     if (na.length() > nb.length()) { return 1 }
     if (na.length() < nb.length()) { return 0 - 1 }
     return lexCmp(na, nb)
 }
 
 coreOf(v: String): String {
-    val dash: Int = v.indexOf("-")
+    var dash: Int = v.indexOf("-")
     if (dash < 0) { return v }
     return v.substring(0, dash)
 }
 
 suffixOf(v: String): String {
-    val dash: Int = v.indexOf("-")
+    var dash: Int = v.indexOf("-")
     if (dash < 0) { return "" }
     return v.substring(dash + 1, v.length())
 }
 
 cmpVersion(a: String, b: String): Int {
-    val pa: List<String> = splitOn(coreOf(a), ".")
-    val pb: List<String> = splitOn(coreOf(b), ".")
+    var pa: List<String> = splitOn(coreOf(a), ".")
+    var pb: List<String> = splitOn(coreOf(b), ".")
     var n: Int = pa.size()
     if (pb.size() > n) { n = pb.size() }
     var i: Int = 0
@@ -111,13 +111,13 @@ cmpVersion(a: String, b: String): Int {
         var sb: String = "0"
         if (i < pa.size()) { sa = pa.get(i) }
         if (i < pb.size()) { sb = pb.get(i) }
-        val c: Int = cmpNumeric(sa, sb)
+        var c: Int = cmpNumeric(sa, sb)
         if (c != 0) { return c }
         i = i + 1
     }
     // same numbers: a final release outranks any pre-release of it
-    val xa: String = suffixOf(a)
-    val xb: String = suffixOf(b)
+    var xa: String = suffixOf(a)
+    var xb: String = suffixOf(b)
     if (xa == "") {
         if (xb == "") { return 0 }
         return 1
@@ -143,7 +143,7 @@ extractBracketCode(line: String): String {
 }
 
 afterMarker(line: String, marker: String): String {
-    val at: Int = line.indexOf(marker)
+    var at: Int = line.indexOf(marker)
     if (at < 0) { return "" }
     return line.substring(at + marker.length(), line.length()).trim()
 }
@@ -152,12 +152,12 @@ classify(buildTxt: String, runTxt: String, expected: String): Verdict {
     if (buildTxt.contains("COMP002")) {
         return Verdict("ICE", "COMP002", "compiler crash in JVM backend")
     }
-    val buildLines: List<String> = listOf()
-    val bparts: String[] = buildTxt.split("\n")
+    var buildLines: List<String> = listOf()
+    var bparts: String[] = buildTxt.split("\n")
     for (var b in bparts) { buildLines.add(b) }
     for (var line in buildLines) {
         if (line.contains("error:")) {
-            val code: String = extractBracketCode(line)
+            var code: String = extractBracketCode(line)
             if (code != "") {
                 var kind: String = "SEM"
                 if (code.startsWith("PARSE")) { kind = "PARSE" }
@@ -205,7 +205,7 @@ classify(buildTxt: String, runTxt: String, expected: String): Verdict {
     }
     // the launcher reports a malformed/missing main(String[]) as a JavaFX problem,
     // in whatever locale the JDK is running; match the stable tokens, not the prose
-    val lower: String = runTxt.toLowerCase()
+    var lower: String = runTxt.toLowerCase()
     if (lower.contains("javafx")) {
         return Verdict("RUNTIME", "BadMainClass", "launcher rejected Default.Main - main(String[]) missing or malformed")
     }
@@ -224,11 +224,11 @@ classify(buildTxt: String, runTxt: String, expected: String): Verdict {
 }
 
 diffReport(runTxt: String, expected: String) {
-    val exp: List<String> = listOf()
-    val got: List<String> = listOf()
-    val eparts: String[] = expected.trim().split("\n")
+    var exp: List<String> = listOf()
+    var got: List<String> = listOf()
+    var eparts: String[] = expected.trim().split("\n")
     for (var e in eparts) { exp.add(e) }
-    val gparts: String[] = runTxt.trim().split("\n")
+    var gparts: String[] = runTxt.trim().split("\n")
     for (var g in gparts) { got.add(g) }
     var n: Int = exp.size()
     if (got.size() > n) { n = got.size() }
@@ -248,17 +248,17 @@ diffReport(runTxt: String, expected: String) {
 }
 
 dedupLookup(dbPath: String, sig: String): List<String> {
-    val hits: List<String> = listOf()
-    val lines: List<String> = readLines(dbPath)
+    var hits: List<String> = listOf()
+    var lines: List<String> = readLines(dbPath)
     for (var line in lines) {
         if (line.startsWith(sig + "|")) { hits.add(line) }
     }
     if (hits.size() > 0) { return hits }
     // a db entry may end in ":*" when the exact discriminator was never recorded
     for (var line in lines) {
-        val star: Int = line.indexOf(":*|")
+        var star: Int = line.indexOf(":*|")
         if (star > 0) {
-            val prefix: String = line.substring(0, star)
+            var prefix: String = line.substring(0, star)
             if (sig.startsWith(prefix + ":")) { hits.add(line) }
         }
     }
@@ -290,11 +290,11 @@ pad(s: String, n: Int): String {
 }
 
 cmdTriage(capDir: String, dbPath: String) {
-    val buildTxt: String = readAll(capDir + "/build.txt")
-    val runTxt: String = readAll(capDir + "/run.txt")
-    val expected: String = readAll(capDir + "/expected.txt")
-    val v: Verdict = classify(buildTxt, runTxt, expected)
-    val sig: String = v.signature()
+    var buildTxt: String = readAll(capDir + "/build.txt")
+    var runTxt: String = readAll(capDir + "/run.txt")
+    var expected: String = readAll(capDir + "/expected.txt")
+    var v: Verdict = classify(buildTxt, runTxt, expected)
+    var sig: String = v.signature()
     println("== kofbug triage ==")
     println("capture   : " + capDir)
     println("kind      : " + v.kind)
@@ -306,7 +306,7 @@ cmdTriage(capDir: String, dbPath: String) {
         return
     }
     if (v.kind == "WRONGOUTPUT") { diffReport(runTxt, expected) ; println("") }
-    val hits: List<String> = dedupLookup(dbPath, sig)
+    var hits: List<String> = dedupLookup(dbPath, sig)
     if (hits.size() == 0) {
         println("dedup     : NOVEL - no filed issue carries this signature")
         println("verdict   : CANDIDATE - needs root-cause analysis")
@@ -320,11 +320,11 @@ cmdTriage(capDir: String, dbPath: String) {
 }
 
 cmdIssue(capDir: String, tplPath: String) {
-    val repro: String = readAll(capDir + "/main.kf")
-    val expected: String = readAll(capDir + "/expected.txt")
-    val actualBuild: String = readAll(capDir + "/build.txt")
-    val actualRun: String = readAll(capDir + "/run.txt")
-    val bytecode: String = readAll(capDir + "/bytecode.txt")
+    var repro: String = readAll(capDir + "/main.kf")
+    var expected: String = readAll(capDir + "/expected.txt")
+    var actualBuild: String = readAll(capDir + "/build.txt")
+    var actualRun: String = readAll(capDir + "/run.txt")
+    var bytecode: String = readAll(capDir + "/bytecode.txt")
     var actual: String = actualRun
     if (actualRun.trim() == "") { actual = actualBuild }
     if (actualBuild.contains("error:")) { actual = actualBuild }
@@ -342,7 +342,7 @@ cmdIssue(capDir: String, tplPath: String) {
 }
 
 cmdVercmp(a: String, b: String) {
-    val c: Int = cmpVersion(a, b)
+    var c: Int = cmpVersion(a, b)
     if (c < 0) { println("LT"); return }
     if (c > 0) { println("GT"); return }
     println("EQ")
@@ -351,10 +351,10 @@ cmdVercmp(a: String, b: String) {
 // picks the highest version from a newline-separated list; the release feed is
 // ordered by publish date, which is not the same as ordered by version
 cmdLatest(listPath: String) {
-    val lines: List<String> = readLines(listPath)
+    var lines: List<String> = readLines(listPath)
     var best: String = ""
     for (var raw in lines) {
-        val v: String = raw.trim()
+        var v: String = raw.trim()
         if (v != "") {
             if (best == "") {
                 best = v
@@ -367,13 +367,13 @@ cmdLatest(listPath: String) {
 }
 
 cmdStats(dbPath: String) {
-    val lines: List<String> = readLines(dbPath)
-    val sigs: List<String> = listOf()
+    var lines: List<String> = readLines(dbPath)
+    var sigs: List<String> = listOf()
     var filed: Int = 0
     for (var line in lines) {
         if (line.trim() != "") {
             filed = filed + 1
-            val s: String = fieldAt(line, 0)
+            var s: String = fieldAt(line, 0)
             if (sigs.contains(s) == false) { sigs.add(s) }
         }
     }
@@ -392,7 +392,7 @@ cmdStats(dbPath: String) {
 }
 
 cmdKnown(dbPath: String) {
-    val lines: List<String> = readLines(dbPath)
+    var lines: List<String> = readLines(dbPath)
     println("== filed issues ==")
     for (var line in lines) {
         if (line.trim() != "") {
@@ -414,7 +414,7 @@ usage() {
 
 main(argv: String[]) {
     if (argv.length == 0) { usage(); return }
-    val cmd: String = argv[0]
+    var cmd: String = argv[0]
     if (cmd == "triage") {
         if (argv.length < 3) { println("triage needs <capdir> <db>"); return }
         cmdTriage(argv[1], argv[2])

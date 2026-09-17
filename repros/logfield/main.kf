@@ -5,7 +5,7 @@ class Collector {
     count(): Int { return log.size() }
 }
 main() {
-    val c: Collector = Collector()
+    var c: Collector = Collector()
     c.emit("a")
     println(c.count())
 }

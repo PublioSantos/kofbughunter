@@ -11,6 +11,6 @@ class Dog: Animal {
 }
 
 main() {
-    val d: Dog = Dog()
+    var d: Dog = Dog()
     println(d.speak())
 }

@@ -5,6 +5,6 @@ class Box(size: Int) {
 }
 
 main() {
-    val b: Box = Box(10)
+    var b: Box = Box(10)
     println(b.getSize())
 }

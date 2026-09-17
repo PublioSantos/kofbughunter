@@ -1,5 +1,5 @@
 main() {
-    val sb: StringBuilder = StringBuilder()
+    var sb: StringBuilder = StringBuilder()
     sb.append("Hello")
     sb.append(", ")
     sb.append("World")

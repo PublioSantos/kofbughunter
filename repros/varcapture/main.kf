@@ -1,6 +1,6 @@
 main() {
     var counter: Int = 0
-    val increment: () -> Unit = { counter = counter + 1 }
+    var increment: () -> Unit = { counter = counter + 1 }
     increment()
     increment()
     increment()

@@ -1,5 +1,5 @@
 main() {
-    val xs: List<Int> = listOf(10, 20, 30)
+    var xs: List<Int> = listOf(10, 20, 30)
     println(xs.first())
     println(xs.last())
 }

@@ -1,5 +1,5 @@
 main() {
-    val m: Map<String, Int> = mapOf()
+    var m: Map<String, Int> = mapOf()
     m.put("a", 1)
     m.put("b", 2)
     for (var k in m.keys()) {

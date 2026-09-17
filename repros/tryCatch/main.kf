@@ -1,6 +1,6 @@
 main() {
     try {
-        val s: String = null
+        var s: String = null
         println(s.length())
     } catch (e: Exception) {
         println("caught: " + e.message)

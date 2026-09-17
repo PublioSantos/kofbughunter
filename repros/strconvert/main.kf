@@ -1,7 +1,7 @@
 main() {
-    val n: Int = 42
-    val s: String = n.toString()
-    val back: Int = s.toInt()
+    var n: Int = 42
+    var s: String = n.toString()
+    var back: Int = s.toInt()
     println(s)
     println(back + 1)
 }

@@ -1,4 +1,4 @@
 main() {
-    val c: Char = 'A'
+    var c: Char = 'A'
     println(c)
 }

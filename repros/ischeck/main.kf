@@ -9,7 +9,7 @@ class Truck extends Vehicle {
 }
 describe(v: Vehicle) {
     if (v is Car) {
-        val c: Car = v as Car
+        var c: Car = v as Car
         println("Car with " + c.doors + " doors")
     } else {
         println("not a Car")
