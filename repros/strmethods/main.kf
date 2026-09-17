@@ -1,0 +1,8 @@
+main() {
+    val s: String = "  Hello World  "
+    println(s.trim())
+    println(s.trim().startsWith("Hello"))
+    println(s.trim().endsWith("World"))
+    println(s.trim().contains("lo W"))
+    println(s.trim().replace("World", "Kof"))
+}

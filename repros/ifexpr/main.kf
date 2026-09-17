@@ -1,0 +1,9 @@
+classify(x: Int): String {
+    val label: String = if (x > 0) "positive" else "non-positive"
+    return label
+}
+main() {
+    println(classify(5))
+    println(classify(-1))
+    println(classify(0))
+}

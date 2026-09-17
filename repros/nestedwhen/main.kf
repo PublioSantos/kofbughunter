@@ -1,0 +1,19 @@
+classify(x: Int, y: Int): String {
+    return when {
+        x > 0 -> when {
+            y > 0 -> "Q1"
+            else -> "Q4"
+        }
+        else -> when {
+            y > 0 -> "Q2"
+            else -> "Q3"
+        }
+    }
+}
+
+main() {
+    println(classify(1, 1))
+    println(classify(1, -1))
+    println(classify(-1, 1))
+    println(classify(-1, -1))
+}

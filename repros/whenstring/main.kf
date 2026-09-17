@@ -1,0 +1,14 @@
+describe(s: String): String {
+    return when (s) {
+        "red" -> "warm"
+        "blue" -> "cool"
+        "green" -> "neutral"
+        else -> "unknown"
+    }
+}
+
+main() {
+    println(describe("red"))
+    println(describe("blue"))
+    println(describe("orange"))
+}

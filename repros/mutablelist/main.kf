@@ -1,0 +1,6 @@
+main() {
+    val xs: MutableList<Int> = mutableListOf(1, 2, 3)
+    xs.add(4)
+    println(xs.size)
+    println(xs.get(3))
+}

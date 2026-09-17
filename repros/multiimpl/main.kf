@@ -1,0 +1,22 @@
+interface Printable {
+    print(): Unit
+}
+
+interface Countable {
+    count(): Int
+}
+
+class Word(val text: String): Printable, Countable {
+    print(): Unit {
+        println(text)
+    }
+    count(): Int {
+        return text.length
+    }
+}
+
+main() {
+    val w: Word = Word("hello")
+    w.print()
+    println(w.count())
+}

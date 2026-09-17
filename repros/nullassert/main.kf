@@ -1,0 +1,5 @@
+main() {
+    val n: Int? = 42
+    val x: Int = n!!
+    println(x)
+}

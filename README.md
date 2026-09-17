@@ -150,7 +150,11 @@ No índice (`db/filed.txt`), uma entrada pode terminar em `:*` para correspondê
 ## Resultados / Results
 
 **[PT]** Usado para encontrar e registrar bugs reais no [KofLang/Kof4j](https://github.com/KofLang/Kof4j).
-Issues abertas com este apoiador: #354–#409 (110 bugs em 10 rodadas).
+Issues abertas com este apoiador: #354–#419 (120 bugs em 11 rodadas).
+
+*Projetado e construído como um pipeline semi-automatizado de caça a bugs de compilador/JVM, combinando repros gerados por IA, execução determinística, inspeção de bytecode, classificação de falhas, deduplicação por assinatura e scaffolding automatizado de issues.*
 
 **[EN]** Used to find and file real bugs in [KofLang/Kof4j](https://github.com/KofLang/Kof4j).
-Issues filed using this tool: #354–#409 (110 bugs across 10 rounds).
+Issues filed using this tool: #354–#419 (120 bugs across 11 rounds).
+
+*Designed and built as a semi-automated compiler/JVM bug-hunting pipeline, combining AI-generated reproducers, deterministic execution, bytecode inspection, fault classification, signature-based deduplication and automated issue scaffolding.*

@@ -1,0 +1,8 @@
+class Node(val value: Int, val next: Node?)
+
+main() {
+    val n2: Node = Node(2, null)
+    val n1: Node = Node(1, n2)
+    println(n1.next?.value)
+    println(n2.next?.value)
+}

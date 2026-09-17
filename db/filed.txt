@@ -52,3 +52,13 @@ PARSE:PARSE029|406|'is' type-check operator not parsed in conditional expression
 PARSE:PARSE007|407|Top-level val/var declarations not supported — PARSE007 at module scope
 RUNTIME:VerifyError:bad-operand-type|408|Int? parameter compiled as primitive int — null argument generates invalid bytecode
 SEM:SEM049|409|Null guard 'if (x == null) { return }' does not narrow T? to T — SEM049 on subsequent use
+PARSE:PARSE039|410|Range operator 0..n not parsed — PARSE039 Expected field name
+PARSE:PARSE044|411|Safe-call operator ?. not parsed; nullable reference type T? in constructor parameter rejected
+PARSE:PARSE044|412|Multiple interface implementation class Foo: A, B not parsed
+RUNTIME:IncompatibleClassChangeError|413|Lambda closure does not implement Function interface — IncompatibleClassChangeError at runtime
+PARSE:PARSE041|414|Elvis operator ?: not parsed — distinct from #379 operator+ infinite recursion
+SEM:SEM054|415|String subscript s[0] rejected with SEM054 — no array-subscript support for String
+SEM:SEM021|416|Non-null assertion !! does not narrow Int? to Int — SEM021 false positive (distinct from #400 and #372)
+SEM:SEM015|417|mutableListOf() not defined as a built-in function — distinct from #405
+SEM:SEM015|418|Pair constructor not defined — distinct from #405 and #417
+PARSE:PARSE043|419|Destructured for ((k, v) in map) not parsed — PARSE043

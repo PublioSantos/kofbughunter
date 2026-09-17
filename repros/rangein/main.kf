@@ -1,0 +1,7 @@
+inRange(x: Int): Boolean {
+    return x in 1..5
+}
+main() {
+    println(inRange(3))
+    println(inRange(6))
+}

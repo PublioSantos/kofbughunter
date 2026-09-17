@@ -1,0 +1,5 @@
+main() {
+    val s: String = "hello"
+    println(s[0])
+    println(s[4])
+}
