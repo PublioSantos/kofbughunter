@@ -1,0 +1,10 @@
+class Box(size: Int) {
+    getSize(): Int {
+        return size
+    }
+}
+
+main() {
+    val b: Box = Box(10)
+    println(b.getSize())
+}

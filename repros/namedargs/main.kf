@@ -1,0 +1,11 @@
+greet(name: String, times: Int): Unit {
+    var i: Int = 0
+    while (i < times) {
+        println("Hello " + name)
+        i = i + 1
+    }
+}
+
+main() {
+    greet(times = 2, name = "Bob")
+}

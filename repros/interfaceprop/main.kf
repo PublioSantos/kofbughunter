@@ -1,0 +1,12 @@
+interface Named {
+    val name: String
+}
+
+class Person(n: String): Named {
+    val name: String = n
+}
+
+main() {
+    val p: Person = Person("Alice")
+    println(p.name)
+}

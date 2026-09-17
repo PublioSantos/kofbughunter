@@ -1,0 +1,9 @@
+main() {
+    var x: Int = 0
+    try {
+        x = 1
+    } finally {
+        x = x + 10
+    }
+    println(x)
+}

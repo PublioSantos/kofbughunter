@@ -1,0 +1,5 @@
+main() {
+    println(Math.abs(-5))
+    println(Math.max(3, 7))
+    println(Math.min(3, 7))
+}

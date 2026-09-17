@@ -1,0 +1,6 @@
+main() {
+    val xs: List<Int> = listOf(3, 1, 4, 1, 5)
+    val s: List<Int> = xs.sorted()
+    println(s.get(0))
+    println(s.get(4))
+}

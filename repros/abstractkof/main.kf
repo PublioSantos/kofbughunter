@@ -1,0 +1,14 @@
+abstract class Shape {
+    abstract area(): Int
+}
+
+class Square(side: Int): Shape {
+    area(): Int {
+        return side * side
+    }
+}
+
+main() {
+    val s: Square = Square(4)
+    println(s.area())
+}

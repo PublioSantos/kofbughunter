@@ -147,14 +147,28 @@ No índice (`db/filed.txt`), uma entrada pode terminar em `:*` para correspondê
 
 ---
 
+## Fluxo atual / Current workflow
+
+```
+kofbughunter → encontra bug → ./kofbug run → ./kofbug issue → gh issue create
+             → aplica fix   → ./kofbug pr <repro> <issue#> <kof4j-dir>
+                            → PR aberto contra KofLang/Kof4j:beta-0.4.0
+                            → Mel revisa → fecha issue
+```
+
+`kofbug pr` compila o Kof4j localmente (Maven + JDK 25 do toolchain), verifica o repro contra o jar patched, e abre o PR diretamente.
+
+---
+
 ## Resultados / Results
 
 **[PT]** Usado para encontrar e registrar bugs reais no [KofLang/Kof4j](https://github.com/KofLang/Kof4j).
-Issues abertas com este apoiador: #354–#419 (120 bugs em 11 rodadas).
+Issues abertas com este apoiador: #354–#427 (130 bugs em 12 rodadas).
 
 *Projetado e construído como um pipeline semi-automatizado de caça a bugs de compilador/JVM, combinando repros gerados por IA, execução determinística, inspeção de bytecode, classificação de falhas, deduplicação por assinatura e scaffolding automatizado de issues.*
 
 **[EN]** Used to find and file real bugs in [KofLang/Kof4j](https://github.com/KofLang/Kof4j).
-Issues filed using this tool: #354–#419 (120 bugs across 11 rounds).
+Issues filed using this tool: #354–#427 (130 bugs across 12 rounds).
+PRs with suggested fixes: [#428](https://github.com/KofLang/Kof4j/pull/428).
 
 *Designed and built as a semi-automated compiler/JVM bug-hunting pipeline, combining AI-generated reproducers, deterministic execution, bytecode inspection, fault classification, signature-based deduplication and automated issue scaffolding.*

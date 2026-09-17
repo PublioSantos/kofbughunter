@@ -1,0 +1,7 @@
+main() {
+    val a: Double = 3.5
+    val b: Double = 1.5
+    println(a + b)
+    println(a * b)
+    println(a - b)
+}

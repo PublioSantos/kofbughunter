@@ -1,0 +1,11 @@
+class Counter(start: Int) {
+    var value: Int = 0
+    init {
+        value = start * 2
+    }
+}
+
+main() {
+    val c: Counter = Counter(5)
+    println(c.value)
+}

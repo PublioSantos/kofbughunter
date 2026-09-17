@@ -1,0 +1,12 @@
+object Counter {
+    var count: Int = 0
+    increment(): Unit {
+        count = count + 1
+    }
+}
+
+main() {
+    Counter.increment()
+    Counter.increment()
+    println(Counter.count)
+}

@@ -1,0 +1,4 @@
+main() {
+    val c: Char = 'A'
+    println(c)
+}

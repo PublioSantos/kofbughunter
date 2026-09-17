@@ -1,0 +1,16 @@
+open class Animal {
+    speak(): String {
+        return "..."
+    }
+}
+
+class Dog: Animal {
+    override speak(): String {
+        return "Woof"
+    }
+}
+
+main() {
+    val d: Dog = Dog()
+    println(d.speak())
+}
