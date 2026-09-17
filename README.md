@@ -203,7 +203,7 @@ and resurrect every already-fixed bug.*
 kofbughunter → encontra bug → ./kofbug run → ./kofbug issue → gh issue create
              → aplica fix   → ./kofbug pr <repro> <issue#> <kof4j-dir>
                             → PR aberto contra KofLang/Kof4j:beta-0.4.0
-                            → Mel revisa → fecha issue
+                            → Criadora da Linguage Kof revisa → fecha issue
 ```
 
 `kofbug pr` compila o Kof4j localmente (Maven + JDK 25 do toolchain), verifica o repro contra o jar patched, e abre o PR diretamente.
