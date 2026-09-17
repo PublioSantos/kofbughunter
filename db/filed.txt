@@ -46,3 +46,9 @@ SEM:SEM021|400|SEM021 false positive: concrete class not assignable to its imple
 RUNTIME:ClassCastException|401|Generic type arguments not verified — List<Int> silently assigned to List<String>, ClassCastException at runtime
 RUNTIME:VerifyError:bad-return-type|402|Function-type field called from typed-return method emits phantom static dispatch → VerifyError: Bad return type
 RUNTIME:VerifyError:stack-underflow|403|Field named 'log' causes all method bodies in the same class to be silently dropped
+PARSE:PARSE051|404|catch clause rejects Kof-style name:Type syntax — only accepts reversed Type name
+SEM:SEM015|405|Exception/RuntimeException constructors undefined — throw/catch unusable for any exception type
+PARSE:PARSE029|406|'is' type-check operator not parsed in conditional expressions
+PARSE:PARSE007|407|Top-level val/var declarations not supported — PARSE007 at module scope
+RUNTIME:VerifyError:bad-operand-type|408|Int? parameter compiled as primitive int — null argument generates invalid bytecode
+SEM:SEM049|409|Null guard 'if (x == null) { return }' does not narrow T? to T — SEM049 on subsequent use

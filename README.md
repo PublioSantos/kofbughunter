@@ -1,80 +1,115 @@
-# kofbug — apoiador do bug hunt do Kof
+# kofbughunter
 
-Ferramenta de apoio para a caça a bugs no Kof 0.4.2-beta (JVM target).
-Faz **tudo que é mecânico**, para que o esforço de IA fique só onde é
-insubstituível: inventar o repro e explicar a causa raiz.
+**[PT]** Ferramenta de apoio mecânico para a caça a bugs no Kof 0.4.2-beta (JVM target).
+Faz tudo que é repetitivo para que o esforço de IA fique só onde é insubstituível:
+inventar o repro e explicar a causa raiz.
 
-O núcleo (`apoiador/main.kf`) **é escrito em Kof** — dogfooding: escrever o
-apoiador na própria linguagem investigada já rende bugs.
+**[EN]** Mechanical support tool for bug-hunting in Kof 0.4.2-beta (JVM target).
+Handles all repetitive work so AI effort is spent only where it cannot be replaced:
+inventing the reproducer and explaining the root cause.
 
-## Divisão de trabalho
+---
 
-| Etapa | Quem faz |
+## Como funciona / How it works
+
+**[PT]** O núcleo (`apoiador/main.kf`) é escrito em Kof — dogfooding deliberado.
+Escrever o apoiador na própria linguagem investigada já rendeu bugs novos.
+O wrapper shell (`kofbug`) só faz o que Kof não consegue: executar processos.
+
+**[EN]** The core logic (`apoiador/main.kf`) is written in Kof itself — deliberate dogfooding.
+Writing the support tool in the language under investigation has already surfaced new bugs.
+The shell wrapper (`kofbug`) only handles what Kof cannot: spawning subprocesses.
+
+---
+
+## Divisão de trabalho / Division of work
+
+| Etapa / Step | Responsável / Owner |
 |---|---|
-| Inventar o programa de repro | **IA** |
-| Compilar, executar, extrair bytecode | `kofbug` (shell — Kof não tem API de processo) |
-| Classificar a falha (SEM/PARSE/COMP002/VerifyError/…) | **Kof** |
-| Comparar saída esperada × real, linha a linha | **Kof** |
-| Deduplicar contra as issues já reportadas | **Kof** |
-| Preencher Environment/Reproducer/Expected/Actual/Bytecode | **Kof** |
-| Escrever Description / Root Cause / Suggested Fix | **IA** |
-| Abrir a issue | `gh` |
+| Inventar o repro / Invent the reproducer | **IA / AI** |
+| Compilar, executar, extrair bytecode / Build, run, disassemble | `kofbug` (shell) |
+| Classificar a falha / Classify the fault | **Kof** |
+| Comparar saída esperada × real / Diff expected vs actual | **Kof** |
+| Deduplicar contra issues já reportadas / Dedup against filed issues | **Kof** |
+| Preencher 5 das 8 seções do template / Fill 5 of 8 issue template sections | **Kof** |
+| Description / Root Cause / Suggested Fix | **IA / AI** |
+| Abrir a issue / File the issue | `gh` |
 
-Das 8 seções obrigatórias do template, o Kof preenche 5. Sobram 3 — as que
-exigem análise de verdade.
+Das 8 seções obrigatórias do template, o Kof preenche 5. Sobram 3 — as que exigem análise.  
+*Of the 8 required template sections, Kof fills 5. The remaining 3 require real analysis.*
 
-## Uso
+---
 
-```bash
-cd /home/publio/Downloads/install/kofbug
-
-./kofbug new meurepro           # cria repros/meurepro/main.kf + expected.txt
-$EDITOR repros/meurepro/main.kf # escreve o repro e a saída esperada
-./kofbug run meurepro           # compila + executa + javap + classifica + dedup
-./kofbug focus meurepro Classe  # reduz o bytecode capturado a uma classe
-./kofbug issue meurepro         # imprime o esqueleto da issue já preenchido
-```
-
-Depois de abrir a issue, registre-a para que as próximas rodadas deduplicem
-contra ela:
+## Uso / Usage
 
 ```bash
-./kofbug file RUNTIME:VerifyError:stack-underflow 400 "field named log corrupts method bodies"
+cd ~/apoiador
+
+./kofbug new meurepro           # scaffold repros/meurepro/main.kf + expected.txt
+$EDITOR repros/meurepro/main.kf # write the reproducer and expected output
+./kofbug run meurepro           # build + run + javap + classify + dedup
+./kofbug focus meurepro Classe  # narrow bytecode to one class
+./kofbug issue meurepro         # emit the pre-filled issue skeleton
 ```
 
-Outros comandos: `list`, `stats`, `known`, `build` (recompila o apoiador).
+**[PT]** Depois de abrir a issue, registre-a para que as próximas rodadas deduplicem:
 
-## Vereditos
+**[EN]** After filing the issue, record it for future dedup:
 
-- `NOVEL` — nenhuma issue reportada tem essa assinatura → candidato a bug novo
-- `LIKELY DUPLICATE` — alguma issue compartilha a assinatura → confirmar se o
-  mecanismo é diferente antes de reportar
-- `NO FAULT DETECTED` — compilou, rodou e bateu com o esperado → não é bug
+```bash
+./kofbug file RUNTIME:VerifyError:stack-underflow 403 "field named log corrupts method bodies"
+```
 
-Assinatura = `KIND:CODE`, e para `VerifyError` também a razão do JVM
-(`bad-return-type`, `stack-underflow`, `bad-operand-type`, …), porque sem ela
-todas as falhas de backend caem num balde só.
+Outros comandos / Other commands: `list`, `stats`, `known`, `build` (recompila o apoiador / recompiles the tool)
 
-No índice (`db/filed.txt`), uma entrada pode terminar em `:*` quando a razão
-exata nunca foi registrada — vira correspondência por prefixo.
+---
 
-## Restrições do Kof respeitadas no apoiador
+## Vereditos / Verdicts
 
-O apoiador evita deliberadamente tudo que já se sabe quebrado, senão ele
-mesmo não compila:
+- **`NOVEL`** — nenhuma issue tem essa assinatura → candidato a bug novo  
+  *no filed issue carries this signature → new bug candidate*
+- **`LIKELY DUPLICATE`** — alguma issue compartilha a assinatura → confirmar mecanismo  
+  *some filed issue shares the signature → confirm if the mechanism differs*
+- **`NO FAULT DETECTED`** — compilou, rodou e bateu com o esperado  
+  *compiled, ran, and matched expected output*
 
-- sem classes genéricas próprias, sem interfaces genéricas (#385)
-- sem campos de tipo-função (#388)
-- sem primitivos anuláveis em campo ou parâmetro (#393, #398)
-- sem `List.reduce()` com retorno tipado (#394, #395)
-- sem `String.charAt()` (#387) — usa `substring(i, i+1)`
-- sem interpolação `${}` (#369) — concatenação explícita
-- sem campo chamado `log` (corrompe corpos de método — bug desta sessão)
-- sem variável local `args` em `main()` (#397)
-- `main(argv: String[])`, nunca `main(argv: List<String>)` (gera
-  `main(ArrayList)`, classe não executável)
-- valores de `kof.io` só com tipo inferido (`var f = File(p)`) — a anotação
-  explícita `val f: File` dá SEM011
+**[PT]** A assinatura é `KIND:CODE`, e para `VerifyError` inclui a razão do JVM
+(`bad-return-type`, `stack-underflow`, …) — sem ela todos os erros de backend caem num balde só.
 
-`String.split()` devolve `String[]`, não `List<String>` (#372) — o apoiador
-converte na mão em `readLines`.
+**[EN]** The signature is `KIND:CODE`, and for `VerifyError` also includes the JVM reason string
+(`bad-return-type`, `stack-underflow`, …) — without it every backend fault collapses into one bucket.
+
+No índice (`db/filed.txt`), uma entrada pode terminar em `:*` para correspondência por prefixo.  
+*In the index (`db/filed.txt`), an entry may end in `:*` for prefix-match dedup.*
+
+---
+
+## Bugs do Kof evitados no apoiador / Kof bugs deliberately avoided in the tool
+
+**[PT]** O apoiador evita deliberadamente tudo que já se sabe quebrado — senão ele mesmo não compila.
+
+**[EN]** The tool deliberately avoids everything known to be broken — otherwise it wouldn't compile itself.
+
+- sem classes/interfaces genéricas próprias (#385) / no user-defined generic classes or interfaces
+- sem campos de tipo-função (#388, #402) / no function-type fields
+- sem primitivos anuláveis em campo ou parâmetro (#393, #398, #408) / no nullable primitive fields or parameters
+- sem `List.reduce()` com retorno tipado (#394, #395) / no typed-return `List.reduce()`
+- sem `String.charAt()` (#387) — usa `substring(i, i+1)` / uses `substring(i, i+1)` instead
+- sem interpolação `${}` (#369) — concatenação explícita / explicit string concatenation
+- sem campo chamado `log` (#403) — corrompe corpos de método / corrupts method bodies
+- sem variável local `args` em `main()` (#397) / no local variable named `args` in `main()`
+- `main(argv: String[])`, nunca `main(argv: List<String>)` — gera `main(ArrayList)` inutilizável  
+  *`main(argv: List<String>)` compiles to `main(ArrayList)` which the JVM launcher rejects*
+- valores de `kof.io` só com tipo inferido (`var f = File(p)`) — `val f: File` dá SEM011  
+  *`kof.io` values only with inferred type — explicit annotation gives SEM011*
+- `String.split()` devolve `String[]`, não `List<String>` (#372)
+
+---
+
+## Resultados / Results
+
+**[PT]** Usado para encontrar e registrar bugs reais no [KofLang/Kof4j](https://github.com/KofLang/Kof4j).
+Issues abertas com este apoiador: #354–#409 (110 bugs em 10 rodadas).
+
+**[EN]** Used to find and file real bugs in [KofLang/Kof4j](https://github.com/KofLang/Kof4j).
+Issues filed using this tool: #354–#409 (110 bugs across 10 rounds).
