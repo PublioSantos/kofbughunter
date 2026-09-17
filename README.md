@@ -144,6 +144,8 @@ No índice (`db/filed.txt`), uma entrada pode terminar em `:*` para correspondê
 - valores de `kof.io` só com tipo inferido (`var f = File(p)`) — `val f: File` dá SEM011  
   *`kof.io` values only with inferred type — explicit annotation gives SEM011*
 - `String.split()` devolve `String[]`, não `List<String>` (#372)
+- sem `StringBuilder` — classe Java, não existe no Kof / `StringBuilder` is a Java class, not a Kof type
+- sem `Math` — classe Java, não existe no Kof / `Math` is a Java class, not a Kof type
 
 ---
 
