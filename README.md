@@ -26,7 +26,7 @@ The shell wrapper (`kofbug`) only handles what Kof cannot: spawning subprocesses
 
 | Etapa / Step | Responsável / Owner |
 |---|---|
-| Inventar o repro / Invent the reproducer | **IA / AI** |
+| Gerar o repro / Generate the reproducer | **IA / AI** |
 | Compilar, executar, extrair bytecode / Build, run, disassemble | `kofbug` (shell) |
 | Classificar a falha / Classify the fault | **Kof** |
 | Comparar saída esperada × real / Diff expected vs actual | **Kof** |
@@ -35,7 +35,7 @@ The shell wrapper (`kofbug`) only handles what Kof cannot: spawning subprocesses
 | Description / Root Cause / Suggested Fix | **IA / AI** |
 | Abrir a issue / File the issue | `gh` |
 
-Das 8 seções obrigatórias do template, o Kof preenche 5. Sobram 3 — as que exigem análise.  
+Das 8 seções obrigatórias do template, o Kof preenche 5. Sobram 3 — as que exigem análise real.  
 *Of the 8 required template sections, Kof fills 5. The remaining 3 require real analysis.*
 
 ---
