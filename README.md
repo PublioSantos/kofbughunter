@@ -4,9 +4,13 @@
 Faz tudo que é repetitivo para que o esforço de IA fique só onde é inevitável:
 gerar o repro e explicar a causa raiz.
 
+O objetivo não é produzir issues. É encontrar bugs reais.
+
 **[EN]** Mechanical support tool for bug-hunting in Kof (JVM target).
 Handles all repetitive work so AI effort is spent only where it cannot be replaced:
 inventing the reproducer and explaining the root cause.
+
+The goal is not to generate issues. It is to find real bugs.
 
 ---
 
