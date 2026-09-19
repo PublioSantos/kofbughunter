@@ -546,11 +546,12 @@ The triage/issue/stats/known/vercmp logic all lives in apoiador/main.kf (Kof).
 USAGE
 }
 
+auto_check
 case "${1:-}" in
   new)    shift; cmd_new "$@" ;;
   lint)   shift; cmd_lint "$@" ;;
   tip)    shift; cmd_tip "$@" ;;
-  run)    shift; auto_check; cmd_run "$@" ;;
+  run)    shift; cmd_run "$@" ;;
   triage) shift; cmd_triage "$@" ;;
   issue)  shift; cmd_issue "$@" ;;
   focus)  shift; cmd_focus "$@" ;;
@@ -559,10 +560,10 @@ case "${1:-}" in
   known)  shift; cmd_known "$@" ;;
   file)    shift; cmd_file "$@" ;;
   pr)      shift; cmd_pr "$@" ;;
-  build)   shift; auto_check; cmd_build "$@" ;;
+  build)   shift; cmd_build "$@" ;;
   version) shift; cmd_version "$@" ;;
   upgrade) shift; cmd_upgrade "$@" ;;
-  regress)  shift; auto_check; cmd_regress "$@" ;;
+  regress)  shift; cmd_regress "$@" ;;
   baseline) shift; cmd_baseline "$@" ;;
   *)       usage ;;
 esac
