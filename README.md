@@ -152,21 +152,23 @@ there is not Kof, and the compiler rejecting it is not a bug.
    triagem — ela puxa o agente do Kof a *implementar* a API inventada.
    *If it is not native Kof, do not use it. A false issue does not just waste
    triage — it pulls the Kof agent toward implementing the invented API.*
-2. **Caçar contra o branch `beta-0.4.0`, nunca contra a tag de release.** O branch
-   está à frente; contra a tag, tudo que já foi corrigido reaparece como bug novo.
-   *Hunt against the `beta-0.4.0` branch, never the release tag.*
+2. **Caçar sempre contra o release mais recente.** O `auto_check` faz isso
+   automaticamente a cada invocação — sem configuração manual.
+   *Always hunt against the latest release. `auto_check` does this automatically
+   on every invocation — no manual setup needed.*
 
 ```bash
-./kofbug tip ~/Downloads/Kof4j   # compila o branch e fixa o toolchain nele
 ./kofbug lint meurepro           # recusa formas Kotlin/Java antes de virarem issue
 ```
 
-`run` já faz o lint sozinho. O pin sobrevive ao auto-update: a versão do branch
-é *menor* que a da tag mais nova, então sem o marcador o comparador faria
-downgrade e ressuscitaria todos os bugs já corrigidos.
-*`run` lints on its own. The pin survives auto-update: the branch version reads
-lower than the newest tag, so without the marker the comparator would downgrade
-and resurrect every already-fixed bug.*
+`run` já faz o lint sozinho.
+*`run` lints on its own.*
+
+> **`./kofbug tip`** só é necessário quando o checkout local do Kof4j tem commits
+> ainda não incluídos em nenhum release. Se o release já ultrapassou o branch,
+> usar `tip` ressuscita bugs já corrigidos — não usar.
+> *Use `./kofbug tip` only when the local Kof4j checkout has commits not yet in
+> any release. If the release is ahead, `tip` resurrects already-fixed bugs — don't.*
 
 ---
 
@@ -202,11 +204,11 @@ and resurrect every already-fixed bug.*
 ```
 kofbughunter → encontra bug → ./kofbug run → ./kofbug issue → gh issue create
              → aplica fix   → ./kofbug pr <repro> <issue#> <kof4j-dir>
-                            → PR aberto contra KofLang/Kof4j:beta-0.4.0
+                            → PR aberto contra KofLang/Kof4j (branch padrão: main)
                             → Criadora da linguagem Kof revisa → fecha issue
 ```
 
-`kofbug pr` compila o Kof4j localmente (Maven + JDK 25 do toolchain), verifica o repro contra o jar patched, e abre o PR diretamente.
+`kofbug pr` compila o Kof4j localmente (Maven + JDK do toolchain), verifica o repro contra o jar patched, e abre o PR diretamente.
 
 ---
 
