@@ -1,0 +1,4 @@
+main() {
+    var d = 3.14
+    println(d as String)
+}

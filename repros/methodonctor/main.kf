@@ -1,0 +1,6 @@
+class Point(Int x, Int y) {
+    Int sum() { return x + y }
+}
+main() {
+    println(Point(3, 4).sum())
+}

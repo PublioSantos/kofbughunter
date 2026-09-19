@@ -1,0 +1,6 @@
+main() {
+    var items = listOf("a", "b", "c")
+    for (var s in items) {
+        println(s)
+    }
+}

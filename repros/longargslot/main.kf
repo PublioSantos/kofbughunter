@@ -1,0 +1,8 @@
+void test(Long a, Int b, Int c) {
+    println(a)
+    println(b)
+    println(c)
+}
+main() {
+    test(10L, 20, 30)
+}

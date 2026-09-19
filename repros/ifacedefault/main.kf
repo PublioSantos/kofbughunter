@@ -1,14 +1,10 @@
-interface Greetable {
-    String name()
+interface Greeter {
     String greet() {
-        return "Hello, " + this.name()
+        return "Hello"
     }
 }
-class Person(String nm) implements Greetable {
-    String name() { return this.nm }
-}
+class MyGreeter implements Greeter {}
 main() {
-    var p = Person("Mel")
-    println(p.greet())
-    println(p.name())
+    var g = MyGreeter()
+    println(g.greet())
 }

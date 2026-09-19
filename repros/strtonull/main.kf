@@ -1,0 +1,4 @@
+main() {
+    var s = null
+    println("value: " + s)
+}

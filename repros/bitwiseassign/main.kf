@@ -1,0 +1,20 @@
+main() {
+    var flags = 15
+    flags &= 12
+    println(flags)
+    var bits = 5
+    bits |= 2
+    println(bits)
+    var x = 7
+    x ^= 3
+    println(x)
+    var n = 3
+    n <<= 2
+    println(n)
+    var m = 16
+    m >>= 2
+    println(m)
+    var neg = -1
+    neg >>>= 28
+    println(neg)
+}

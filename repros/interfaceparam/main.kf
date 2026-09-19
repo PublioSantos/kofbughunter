@@ -1,0 +1,10 @@
+interface Describable { String describe() }
+class Cat(String name) implements Describable {
+    String describe() { return "cat:" + name }
+}
+void show(Describable d) {
+    println(d.describe())
+}
+main() {
+    show(Cat("Whiskers"))
+}

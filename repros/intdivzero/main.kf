@@ -1,0 +1,9 @@
+main() {
+    var a = 10
+    var b = 0
+    try {
+        println(a / b)
+    } catch (ArithmeticException e) {
+        println("caught: " + e.getMessage())
+    }
+}

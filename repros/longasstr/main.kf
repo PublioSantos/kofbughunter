@@ -1,0 +1,4 @@
+main() {
+    var n = 100L
+    println(n as String)
+}

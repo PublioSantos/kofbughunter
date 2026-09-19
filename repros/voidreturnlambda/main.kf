@@ -1,0 +1,7 @@
+main() {
+    var action = () -> {
+        return 99
+    }
+    action()
+    println("done")
+}

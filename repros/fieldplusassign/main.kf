@@ -1,0 +1,9 @@
+class Box(Int x) {
+    void add(Int n) { x += n }
+    Int get() { return x }
+}
+main() {
+    var b = Box(10)
+    b.add(5)
+    println(b.get())
+}

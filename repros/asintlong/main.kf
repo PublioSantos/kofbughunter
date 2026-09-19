@@ -1,0 +1,5 @@
+main() {
+    var n = 2147483647
+    var m = n as Long + 1L
+    println(m)
+}

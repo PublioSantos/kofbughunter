@@ -1,0 +1,6 @@
+main() {
+    var n = 0xFF
+    var m = 0x1A2B
+    println(n)
+    println(m)
+}

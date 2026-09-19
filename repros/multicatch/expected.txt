@@ -1,2 +1,2 @@
-arithmetic: / by zero
+err
 done

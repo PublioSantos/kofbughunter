@@ -1,0 +1,9 @@
+interface Runnable { void run() }
+class Task implements Runnable {
+    void run() { println("running") }
+}
+main() {
+    var t = Task()
+    println(t instanceof Runnable)
+    println(t instanceof Task)
+}

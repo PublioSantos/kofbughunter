@@ -1,0 +1,6 @@
+String greet(String name) {
+    return "Hello, " + name
+}
+main() {
+    println(greet(null))
+}

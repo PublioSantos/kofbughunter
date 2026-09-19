@@ -1,0 +1,4 @@
+main() {
+    var n = 65
+    println(n as Char)
+}

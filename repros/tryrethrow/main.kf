@@ -1,0 +1,13 @@
+main() {
+    try {
+        try {
+            throw "inner error"
+        } catch (String e) {
+            println("inner catch: " + e)
+            throw e
+        }
+    } catch (String e2) {
+        println("outer catch: " + e2)
+    }
+    println("done")
+}

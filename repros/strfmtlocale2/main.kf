@@ -1,0 +1,4 @@
+main() {
+    println(String.format("%.4f", 3.14159))
+    println(String.format("%e", 12345.6789))
+}

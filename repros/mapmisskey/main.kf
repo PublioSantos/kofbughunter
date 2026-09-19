@@ -1,0 +1,7 @@
+main() {
+    var m = mapOf("a", 1, "b", 2)
+    var x = m.get("c")
+    println(x)
+    var y: Int = m.get("c")
+    println(y)
+}

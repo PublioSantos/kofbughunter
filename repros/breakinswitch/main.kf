@@ -1,0 +1,12 @@
+main() {
+    var found = 0
+    for (var i = 0; i < 5; i++) {
+        switch (i) {
+            case 3: {
+                found = i
+                break
+            }
+        }
+    }
+    println(found)
+}

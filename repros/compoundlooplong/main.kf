@@ -1,0 +1,9 @@
+main() {
+    var n = 1L
+    var i = 0
+    while (i < 40) {
+        n *= 2L
+        i++
+    }
+    println(n)
+}

@@ -1,0 +1,4 @@
+main() {
+    var f: (Int, Int) -> Int = (a: Int, b: Int) -> a + b
+    println(f(3, 4))
+}

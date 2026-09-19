@@ -1,0 +1,6 @@
+main() {
+    var flag = true
+    println("flag: " + flag)
+    println("num: " + 42)
+    println("pi: " + 3.14)
+}

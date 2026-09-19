@@ -1,0 +1,7 @@
+main() {
+    var s = "a,b,c,d"
+    var parts = s.split(",")
+    println(parts.length)
+    println(parts[0])
+    println(parts[3])
+}

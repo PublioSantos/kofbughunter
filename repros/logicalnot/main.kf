@@ -1,0 +1,6 @@
+main() {
+    println(!true)
+    println(!false)
+    var b = true
+    println(!b)
+}

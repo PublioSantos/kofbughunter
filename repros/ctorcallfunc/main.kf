@@ -1,0 +1,14 @@
+Int validate(Int n) {
+    if (n < 0) { return 0 }
+    return n
+}
+class Safe(Int n) {
+    Safe(Int n) {
+        this.n = validate(n)
+    }
+    Int get() { return n }
+}
+main() {
+    var s = Safe(-5)
+    println(s.get())
+}

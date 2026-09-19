@@ -1,0 +1,9 @@
+main() {
+    for (var i = 0; i < 3; i++) {
+        println(i)
+    }
+    var items = listOf(10, 20, 30)
+    for (var x in items) {
+        println(x)
+    }
+}

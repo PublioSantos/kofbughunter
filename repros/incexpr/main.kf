@@ -1,0 +1,10 @@
+main() {
+    var i = 10
+    var j = i++
+    println(i)
+    println(j)
+    var k = 5
+    var l = ++k
+    println(k)
+    println(l)
+}

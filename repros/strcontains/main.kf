@@ -1,0 +1,7 @@
+main() {
+    var s = "hello world"
+    println(s.contains("world"))
+    println(s.contains("xyz"))
+    println(s.startsWith("hello"))
+    println(s.endsWith("world"))
+}

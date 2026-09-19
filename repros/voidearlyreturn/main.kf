@@ -1,0 +1,11 @@
+void check(Int n) {
+    if (n < 0) {
+        println("negative")
+        return
+    }
+    println("positive: " + n)
+}
+main() {
+    check(-1)
+    check(5)
+}

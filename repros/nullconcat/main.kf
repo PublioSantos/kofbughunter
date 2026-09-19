@@ -1,8 +1,4 @@
 main() {
-    var s = null
-    var result = s + " world"
-    println(result)
-    var n = 42
-    var r2 = "value: " + n
-    println(r2)
+    var s = null as String
+    println("prefix:" + s)
 }

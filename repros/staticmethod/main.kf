@@ -1,0 +1,8 @@
+class MathUtil {
+    static Int square(Int n) {
+        return n * n
+    }
+}
+main() {
+    println(MathUtil.square(7))
+}

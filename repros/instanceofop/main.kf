@@ -1,0 +1,5 @@
+main() {
+    var x = "hello"
+    var r = x instanceof String + "!"
+    println(r)
+}

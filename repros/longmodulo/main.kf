@@ -1,0 +1,5 @@
+main() {
+    var a = 1000000007L
+    var b = 3L
+    println(a % b)
+}

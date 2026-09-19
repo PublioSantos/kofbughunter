@@ -204,7 +204,7 @@ there is not Kof, and the compiler rejecting it is not a bug.
 ```
 kofbughunter → encontra bug → ./kofbug run → ./kofbug issue → gh issue create
              → aplica fix   → ./kofbug pr <repro> <issue#> <kof4j-dir>
-                            → PR aberto contra KofLang/Kof4j (branch padrão: main)
+                            → PR aberto contra KofLang/Kof4j:beta-0.4.0 (branch de desenvolvimento)
                             → Criadora da linguagem Kof revisa → fecha issue
 ```
 

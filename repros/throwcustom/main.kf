@@ -1,0 +1,10 @@
+class AppError(String msg) extends RuntimeException {
+    String getMsg() { return msg }
+}
+main() {
+    try {
+        throw new AppError("oops")
+    } catch (AppError e) {
+        println(e.getMsg())
+    }
+}

@@ -1,0 +1,10 @@
+main() {
+    var f = (x: Int) -> {
+        if (x > 0) {
+            return x * 2
+        }
+        return 0
+    }
+    println(f(5))
+    println(f(-1))
+}

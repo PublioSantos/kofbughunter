@@ -1,0 +1,8 @@
+main() {
+    println(-7 / 2)
+    println(7 / -2)
+    println(-7 % 3)
+    println(7 % -3)
+    var x = 2147483647
+    println(x + 1)
+}

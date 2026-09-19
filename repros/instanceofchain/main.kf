@@ -1,0 +1,7 @@
+class Animal(String name) {}
+class Dog(String name) extends Animal(name) {}
+main() {
+    var d = Dog("Rex")
+    println(d instanceof Animal)
+    println(d instanceof Dog)
+}

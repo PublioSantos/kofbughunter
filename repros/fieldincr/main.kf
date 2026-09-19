@@ -1,0 +1,15 @@
+class Counter(Int count) {
+    void increment() {
+        count++
+    }
+    Int value() {
+        return count
+    }
+}
+main() {
+    var c = Counter(0)
+    c.increment()
+    c.increment()
+    c.increment()
+    println(c.value())
+}

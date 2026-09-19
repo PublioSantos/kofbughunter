@@ -1,0 +1,6 @@
+Int add(Int a, Int b) { return a + b }
+Double add(Double a, Double b) { return a + b }
+main() {
+    println(add(1, 2))
+    println(add(1.5, 2.5))
+}

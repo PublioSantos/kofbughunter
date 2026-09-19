@@ -1,0 +1,15 @@
+class Counter {
+    static Int total = 0
+    Counter() {
+        total++
+    }
+    static Int getTotal() {
+        return total
+    }
+}
+main() {
+    Counter()
+    Counter()
+    Counter()
+    println(Counter.getTotal())
+}

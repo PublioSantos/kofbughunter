@@ -1,0 +1,7 @@
+main() {
+    var a = 10
+    var b = 3
+    println(a as Long / b)
+    println(a as Long * b)
+    println(a as Long + b)
+}

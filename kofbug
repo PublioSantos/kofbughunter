@@ -530,10 +530,9 @@ usage() {
   regress                 re-run every repro; report what moved vs. baseline
   baseline                freeze the current verdicts as the new baseline
 
-Hunt against the BRANCH, not the release tag: `tip <kof4j-dir>` builds
-beta-0.4.0 and pins to it, and the pin survives the auto-update (the branch
-version reads lower than the newest tag, so a plain compare would downgrade it
-and resurrect every bug the branch already fixed).
+Hunt against the LATEST RELEASE (auto_check does this automatically).
+`tip <kof4j-dir>` builds from the local checkout and pins to it — only use
+when the local checkout has commits not yet in any release.
 
 Every command that invokes the compiler checks the release feed first (once a
 day); an outdated toolchain is upgraded automatically, EXCEPT when pinned to a

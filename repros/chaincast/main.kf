@@ -1,0 +1,10 @@
+main() {
+    var n = 42
+    var d = n as Double
+    var r = d as Int
+    println(r)
+    var x = 3
+    var big = x as Long
+    var back = big as Int
+    println(back)
+}

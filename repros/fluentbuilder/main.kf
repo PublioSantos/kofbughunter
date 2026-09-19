@@ -1,0 +1,11 @@
+class Builder(String result) {
+    Builder append(String s) {
+        return Builder(result + s)
+    }
+    String build() { return result }
+}
+main() {
+    var b = Builder("")
+    var b2 = b.append("hello").append(" ").append("world")
+    println(b2.build())
+}

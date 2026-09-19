@@ -1,0 +1,7 @@
+main() {
+    var a = 10
+    var b = 12
+    println(a & b)
+    println(a | b)
+    println(a ^ b)
+}

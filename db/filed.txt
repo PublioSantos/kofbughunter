@@ -67,3 +67,12 @@ RUNTIME:COMP002|423|Compiler crash on filter { it % 2 == 0 } — MemberCallTyper
 PARSE:PARSE011|425|object declaration not parsed
 WRONGOUTPUT:CharAsInt|426|Char printed as numeric code — println(c) emits 65 instead of A
 RUNTIME:NoClassDefFoundError:as-cast-left-of-op|459|as-cast on LEFT of higher-precedence binary op drops operator+RHS, checkcast "?"
+WRONGOUTPUT:SilentMismatch:format-locale-decimal|466|String.format float/double specifiers use locale-sensitive overload
+SEM:SEM012:string-compound-assign|467|String += non-String rejected (SEM012) but s = s + non-String accepted
+WRONGOUTPUT:SilentMismatch:sem093-class-method|468|void class method accepts return value silently, emits ireturn instead of return
+RUNTIME:IllegalAccessError:compact-ctor-field-write|469|compact-constructor class field mutation throws IllegalAccessError (fields are private final Record fields)
+RUNTIME:IncompatibleClassChangeError:compact-ctor-extend|470|extending compact-constructor class throws IncompatibleClassChangeError (class is final Record)
+RUNTIME:ArrayIndexOutOfBoundsException:as-byte-missing-i2b|471|as Byte missing i2b truncation — Byte.valueOf cache overflow for values outside -128..127
+RUNTIME:ClassCastException:primitive-as-string|472|primitive as String emits checkcast String instead of String.valueOf — ClassCastException at runtime
+ICE:COMP002:switch-on-long|473|switch on Long crashes JVM backend (ASM COMPUTE_FRAMES) with ArrayIndexOutOfBoundsException
+RUNTIME:VerifyError:switch-on-double|474|switch on Double emits if_icmpeq on double stack value — JVM verifier rejects class

@@ -1,0 +1,9 @@
+main() {
+    var a = 0
+    var b = 0
+    var c = 5
+    a = b = c
+    println(a)
+    println(b)
+    println(c)
+}

@@ -1,0 +1,9 @@
+class Util {
+    static void noop() {
+        return 42
+    }
+}
+main() {
+    Util.noop()
+    println("ok")
+}

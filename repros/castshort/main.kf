@@ -1,0 +1,5 @@
+main() {
+    var n = 40000
+    var s = n as Short
+    println(s)
+}

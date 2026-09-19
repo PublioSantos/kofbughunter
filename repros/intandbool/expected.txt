@@ -1,0 +1,2 @@
+both nonzero
+one nonzero

@@ -1,0 +1,10 @@
+class Printer(String prefix) {
+    void print(String msg) {
+        println(prefix + msg)
+        return 42
+    }
+}
+main() {
+    var p = Printer(">> ")
+    p.print("hello")
+}

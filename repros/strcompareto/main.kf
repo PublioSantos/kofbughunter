@@ -1,0 +1,8 @@
+main() {
+    var a = "apple"
+    var b = "banana"
+    var c = "apple"
+    println(a.compareTo(b) < 0)
+    println(b.compareTo(a) > 0)
+    println(a.compareTo(c) == 0)
+}

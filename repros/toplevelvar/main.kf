@@ -1,0 +1,8 @@
+var globalCount = 0
+void inc() { globalCount++ }
+main() {
+    inc()
+    inc()
+    inc()
+    println(globalCount)
+}

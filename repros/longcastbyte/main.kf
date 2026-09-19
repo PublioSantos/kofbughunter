@@ -1,0 +1,4 @@
+main() {
+    var n = 200L
+    println(n as Byte)
+}

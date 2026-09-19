@@ -1,0 +1,8 @@
+main() {
+    var n = 2L
+    switch (n) {
+        case 1L: println("one")
+        case 2L: println("two")
+        default: println("other")
+    }
+}

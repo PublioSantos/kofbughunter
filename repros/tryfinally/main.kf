@@ -1,11 +1,12 @@
 main() {
+    var r = 0
     try {
-        println("try")
-        throw "err"
-    } catch (String e) {
-        println("catch: " + e)
+        r = 1
+        throw new RuntimeException("boom")
+    } catch (RuntimeException e) {
+        r = 2
     } finally {
         println("finally")
     }
-    println("done")
+    println(r)
 }

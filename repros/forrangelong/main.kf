@@ -1,0 +1,7 @@
+main() {
+    var sum = 0L
+    for (var i = 0L; i < 5L; i++) {
+        sum += i
+    }
+    println(sum)
+}

@@ -1,0 +1,15 @@
+class Outer(Int x) {
+    class Inner(Int y) {
+        Int sum() {
+            return x + y
+        }
+    }
+    Inner make(Int y) {
+        return Inner(y)
+    }
+}
+main() {
+    var o = Outer(10)
+    var i = o.make(5)
+    println(i.sum())
+}

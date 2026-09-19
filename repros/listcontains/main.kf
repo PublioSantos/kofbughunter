@@ -1,10 +1,5 @@
 main() {
-    var nums = listOf(10, 20, 30, 40)
-    println(nums.contains(20))
-    println(nums.contains(99))
-    println(nums.size())
-    nums.add(50)
-    println(nums.size())
-    nums.set(0, 99)
-    println(nums.get(0))
+    var items = listOf("a", "b", "c")
+    println(items.contains("b"))
+    println(items.contains("z"))
 }

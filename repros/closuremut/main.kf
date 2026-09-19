@@ -1,0 +1,8 @@
+main() {
+    var count = 0
+    var items = listOf(1, 2, 3, 4, 5)
+    items.forEach((x: Int) -> {
+        count = count + x
+    })
+    println(count)
+}

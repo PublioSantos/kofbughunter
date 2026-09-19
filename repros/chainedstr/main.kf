@@ -1,0 +1,6 @@
+main() {
+    var s = "  hello world  "
+    println(s.trim().toUpperCase())
+    println(s.trim().length())
+    println("abcdef".substring(1, 4))
+}

@@ -1,0 +1,10 @@
+main() {
+    var arr = new Int[3]
+    arr[0] = 1
+    arr[1] = 2
+    arr[2] = 3
+    arr[1] += 10
+    println(arr[0])
+    println(arr[1])
+    println(arr[2])
+}

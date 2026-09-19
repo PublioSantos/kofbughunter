@@ -1,0 +1,7 @@
+main() {
+    var x = 3
+    println(-x * x)
+    println(-(x * x))
+    var y = -2
+    println(y * y)
+}

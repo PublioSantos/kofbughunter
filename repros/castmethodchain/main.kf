@@ -1,0 +1,6 @@
+main() {
+    var n = 42
+    var s = n as String
+    println(s.length())
+    println((n as String).length())
+}

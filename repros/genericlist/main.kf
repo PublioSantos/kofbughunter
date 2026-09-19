@@ -1,0 +1,11 @@
+class Item(String name) {
+    String getName() { return name }
+}
+main() {
+    var items = listOf(Item("a"), Item("b"), Item("c"))
+    var i = 0
+    while (i < items.size()) {
+        println(items.get(i).getName())
+        i++
+    }
+}

@@ -1,0 +1,5 @@
+main() {
+    var big = 9999999999
+    println(String.format("%d", big))
+    println(String.format("%,d", 1000000))
+}

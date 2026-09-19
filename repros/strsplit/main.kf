@@ -1,0 +1,8 @@
+main() {
+    var parts = "a,b,c".split(",")
+    var i = 0
+    while (i < parts.length) {
+        println(parts[i])
+        i++
+    }
+}

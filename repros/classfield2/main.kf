@@ -1,0 +1,13 @@
+class Mutable(Int x) {
+    void setX(Int v) {
+        x = v
+    }
+    Int getX() {
+        return x
+    }
+}
+main() {
+    var m = Mutable(10)
+    m.setX(42)
+    println(m.getX())
+}

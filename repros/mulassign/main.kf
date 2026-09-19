@@ -1,0 +1,7 @@
+main() {
+    var x = 3
+    x *= 4
+    x -= 2
+    x /= 2
+    println(x)
+}

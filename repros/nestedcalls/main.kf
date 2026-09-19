@@ -1,0 +1,5 @@
+Int twice(Int n) { return n * 2 }
+Int inc(Int n) { return n + 1 }
+main() {
+    println(twice(inc(twice(3))))
+}

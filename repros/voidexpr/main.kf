@@ -1,0 +1,7 @@
+void printNum(Int n) {
+    println(n)
+}
+main() {
+    var x = printNum(5)
+    println("done")
+}

@@ -1,0 +1,6 @@
+main() {
+    var s1 = "hello"
+    var s2 = "hel"
+    s2 += "lo"
+    println(s1 == s2)
+}

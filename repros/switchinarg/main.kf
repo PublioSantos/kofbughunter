@@ -1,0 +1,8 @@
+main() {
+    var x = 2
+    println(switch (x) {
+        case 1 -> "one"
+        case 2 -> "two"
+        default -> "other"
+    })
+}

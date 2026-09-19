@@ -1,0 +1,13 @@
+enum Dir { N, S, E, W }
+String describeDir(Dir d) {
+    return switch (d) {
+        case N -> "north"
+        case S -> "south"
+        case E -> "east"
+        case W -> "west"
+    }
+}
+main() {
+    println(describeDir(Dir.N))
+    println(describeDir(Dir.W))
+}

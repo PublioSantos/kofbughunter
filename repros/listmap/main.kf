@@ -1,0 +1,6 @@
+main() {
+    var nums = listOf(1, 2, 3, 4)
+    var doubled = nums.map((x: Int) -> x * 2)
+    println(doubled.get(0))
+    println(doubled.get(3))
+}

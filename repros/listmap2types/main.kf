@@ -1,0 +1,6 @@
+main() {
+    var nums = listOf(1, 2, 3)
+    var strs = nums.map((x: Int) -> x.toString())
+    var lengths = strs.map((s: String) -> s.length())
+    println(lengths.get(0))
+}

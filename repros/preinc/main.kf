@@ -1,0 +1,7 @@
+main() {
+    var a = 5
+    println(a++)
+    println(a)
+    println(++a)
+    println(a)
+}

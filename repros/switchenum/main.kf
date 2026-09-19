@@ -1,0 +1,9 @@
+enum Color { RED, GREEN, BLUE }
+main() {
+    var c = Color.GREEN
+    switch (c) {
+        case GREEN: println("green")
+        case RED:   println("red")
+        default:    println("other")
+    }
+}

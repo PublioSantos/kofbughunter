@@ -1,0 +1,7 @@
+class Node(Int n, Node? next) {
+    Int getN() { return n }
+}
+main() {
+    var node = Node(1, null)
+    println(node.getN())
+}

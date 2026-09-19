@@ -1,0 +1,7 @@
+main() {
+    var flag = true
+    var r = if (flag) 1 else 2.0
+    println(r)
+    var q = if (!flag) "no" else "yes"
+    println(q)
+}

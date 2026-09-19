@@ -1,0 +1,4 @@
+main() {
+    var x = null
+    println(x instanceof String)
+}

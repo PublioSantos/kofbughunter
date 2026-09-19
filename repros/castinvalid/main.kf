@@ -1,0 +1,5 @@
+main() {
+    var s = "hello"
+    var n = s as Int
+    println(n)
+}

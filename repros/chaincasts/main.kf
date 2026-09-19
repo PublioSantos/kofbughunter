@@ -1,0 +1,5 @@
+main() {
+    var n = 5
+    var d = n as Long as Double
+    println(d)
+}

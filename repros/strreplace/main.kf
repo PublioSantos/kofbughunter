@@ -1,0 +1,5 @@
+main() {
+    var s = "hello world"
+    println(s.replace("world", "kof"))
+    println(s.indexOf("world"))
+}

@@ -1,0 +1,4 @@
+void show(Double d) { println(d) }
+main() {
+    show(5)
+}

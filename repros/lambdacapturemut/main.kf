@@ -1,0 +1,6 @@
+main() {
+    var x = 0
+    var f = () -> { x = 1 }
+    f()
+    println(x)
+}

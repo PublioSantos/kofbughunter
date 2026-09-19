@@ -1,0 +1,10 @@
+class Animal(String name) {
+    String speak() { return name + " makes noise" }
+}
+class Dog(String name) extends Animal(name) {
+    String speak() { return name + " barks" }
+}
+main() {
+    var d = Dog("Rex")
+    println(d.speak())
+}

@@ -1,0 +1,4 @@
+main() {
+    var s = "line1\nline2\ttab"
+    println(s)
+}

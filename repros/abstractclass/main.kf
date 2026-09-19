@@ -1,14 +1,15 @@
-abstract class Drawable {
-    abstract draw(): String
-    describe(): String { return "I am " + draw() }
+abstract class Shape {
+    abstract Double area()
+    String describe() {
+        return "area=" + area()
+    }
 }
-class Square extends Drawable {
-    Int side
-    constructor(s: Int) { side = s }
-    draw(): String { return "a square with side " + side }
+class Circle(Double radius) extends Shape {
+    Double area() {
+        return 3.14159 * radius * radius
+    }
 }
 main() {
-    var sq: Square = Square(5)
-    println(sq.draw())
-    println(sq.describe())
+    var c = Circle(2.0)
+    println(c.describe())
 }

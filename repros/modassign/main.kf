@@ -1,0 +1,8 @@
+main() {
+    var x = 17
+    x %= 5
+    println(x)
+    var y = -7
+    y %= 3
+    println(y)
+}

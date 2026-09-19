@@ -1,0 +1,8 @@
+main() {
+    var outer = (x: Int) -> {
+        var inner = (y: Int) -> x + y
+        return inner(10)
+    }
+    println(outer(5))
+    println(outer(20))
+}

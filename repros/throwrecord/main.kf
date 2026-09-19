@@ -1,0 +1,9 @@
+record AppError(String message, Int code) {}
+main() {
+    try {
+        throw AppError("not found", 404)
+    } catch (AppError e) {
+        println(e.message())
+        println(e.code())
+    }
+}

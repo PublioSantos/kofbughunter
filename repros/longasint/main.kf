@@ -1,0 +1,4 @@
+main() {
+    var n = 4294967297L
+    println(n as Int)
+}

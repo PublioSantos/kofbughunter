@@ -1,8 +1,11 @@
 main() {
-    var s = "one,two,three"
-    var parts = s.split(",")
-    println(parts.length)
-    for (var p in parts) {
-        println(p)
+    var arr = new String[3]
+    arr[0] = "x"
+    arr[1] = "y"
+    arr[2] = "z"
+    var i = 0
+    while (i < arr.length) {
+        println(arr[i])
+        i++
     }
 }

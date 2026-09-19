@@ -1,0 +1,10 @@
+class Box(Int value) {
+    void reset() {
+        return 0
+    }
+}
+main() {
+    var b = Box(5)
+    b.reset()
+    println("ok")
+}

@@ -1,0 +1,9 @@
+main() {
+    var o = "hello" as Object
+    try {
+        var n = o as Int
+        println(n)
+    } catch (ClassCastException e) {
+        println("caught cast error")
+    }
+}

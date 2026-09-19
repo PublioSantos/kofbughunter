@@ -1,0 +1,6 @@
+class Point(Int x, Int y) {}
+main() {
+    var p = Point(3, 4)
+    println(p.toString())
+    println("point=" + p)
+}

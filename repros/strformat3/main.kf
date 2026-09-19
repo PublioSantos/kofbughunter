@@ -1,0 +1,5 @@
+main() {
+    println(String.format("%05d", 42))
+    println(String.format("%-10s|", "hello"))
+    println(String.format("%+.2f", 3.14))
+}

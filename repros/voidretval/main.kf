@@ -1,0 +1,7 @@
+void greet(String name) {
+    println("Hello, " + name)
+}
+main() {
+    var x = greet("Mel")
+    println(x)
+}

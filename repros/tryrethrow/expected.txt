@@ -1,0 +1,3 @@
+inner catch: inner error
+outer catch: inner error
+done

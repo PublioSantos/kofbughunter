@@ -1,0 +1,5 @@
+main() {
+    var n = 42
+    var s = n as String
+    println(s)
+}

@@ -1,0 +1,5 @@
+main() {
+    println(String.valueOf(42))
+    println(String.valueOf(3.14))
+    println(String.valueOf(true))
+}

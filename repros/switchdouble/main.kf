@@ -1,0 +1,7 @@
+main() {
+    var d = 1.5
+    switch (d) {
+        case 1.5: println("yes")
+        default:  println("no")
+    }
+}

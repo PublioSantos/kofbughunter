@@ -1,0 +1,9 @@
+main() {
+    var x = 2
+    var label = switch (x) {
+        case 1, 2 -> "one or two"
+        case 3, 4 -> "three or four"
+        default -> "other"
+    }
+    println(label)
+}

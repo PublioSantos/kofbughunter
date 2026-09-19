@@ -1,0 +1,7 @@
+main() {
+    var x = 100
+    for (var x = 0; x < 3; x++) {
+        println(x)
+    }
+    println(x)
+}

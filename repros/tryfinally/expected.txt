@@ -1,4 +1,2 @@
-try
-catch: err
 finally
-done
+2

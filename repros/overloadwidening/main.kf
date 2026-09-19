@@ -1,0 +1,4 @@
+Int sum(Int a, Int b, Int c) { return a + b + c }
+main() {
+    println(sum(1, 2, 3))
+}

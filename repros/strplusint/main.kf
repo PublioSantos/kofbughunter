@@ -1,0 +1,8 @@
+main() {
+    var s = "count: "
+    s += 42
+    println(s)
+    var n = 10
+    n += 5
+    println(n)
+}

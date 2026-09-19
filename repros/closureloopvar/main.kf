@@ -1,0 +1,10 @@
+main() {
+    var funcs = listOf(
+        (dummy: Int) -> 0 * dummy + 0,
+        (dummy: Int) -> 0 * dummy + 1,
+        (dummy: Int) -> 0 * dummy + 2
+    )
+    println(funcs.get(0)(99))
+    println(funcs.get(1)(99))
+    println(funcs.get(2)(99))
+}

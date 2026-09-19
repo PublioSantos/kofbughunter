@@ -1,0 +1,7 @@
+void show(Object o) {
+    println(o.toString())
+}
+main() {
+    show("hello")
+    show(42)
+}

@@ -1,0 +1,9 @@
+record Point(Int x, Int y) {}
+main() {
+    var p = Point(3, 4)
+    var desc = switch (p) {
+        case Point(var a, var b) -> a + "+" + b
+        default -> "other"
+    }
+    println(desc)
+}

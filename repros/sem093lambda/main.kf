@@ -1,0 +1,7 @@
+main() {
+    var nums = listOf(1, 2, 3)
+    nums.forEach((x: Int) -> {
+        println(x)
+        return 42
+    })
+}

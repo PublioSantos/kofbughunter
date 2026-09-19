@@ -1,0 +1,4 @@
+main() {
+    var n = 5L
+    println(n as Byte)
+}

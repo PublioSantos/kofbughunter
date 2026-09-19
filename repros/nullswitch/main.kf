@@ -1,0 +1,7 @@
+main() {
+    var s = "hello"
+    switch (s) {
+        case "hello": println("match")
+        default: println("no")
+    }
+}

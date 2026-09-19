@@ -1,0 +1,8 @@
+class Calculator(Int base) {
+    Int triple() { return double() + base }
+    Int double() { return base * 2 }
+}
+main() {
+    var c = Calculator(5)
+    println(c.triple())
+}

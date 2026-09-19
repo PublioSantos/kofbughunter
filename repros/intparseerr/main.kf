@@ -1,0 +1,8 @@
+main() {
+    try {
+        var n = Int.parseInt("bad")
+        println(n)
+    } catch (NumberFormatException e) {
+        println("err: " + e.getMessage())
+    }
+}

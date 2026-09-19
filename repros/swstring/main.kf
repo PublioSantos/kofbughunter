@@ -1,0 +1,15 @@
+main() {
+    var s = "hello"
+    var r = switch (s) {
+        case "hello" -> 1
+        case "world" -> 2
+        default -> 0
+    }
+    println(r)
+    var t = "world"
+    println(switch (t) {
+        case "hello" -> "H"
+        case "world" -> "W"
+        default -> "?"
+    })
+}

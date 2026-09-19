@@ -1,0 +1,8 @@
+main() {
+    var words = listOf("hello", "world", "kof")
+    var result = words.map((w: String) -> w.toUpperCase())
+    println(result.get(0))
+    println(result.get(2))
+    var long_words = words.filter((w: String) -> w.length() > 3)
+    println(long_words.size())
+}

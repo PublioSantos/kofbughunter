@@ -1,0 +1,6 @@
+main() {
+    var items = listOf("a", "b")
+    items.add("c")
+    println(items.size())
+    println(items.get(2))
+}

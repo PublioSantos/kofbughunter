@@ -1,0 +1,10 @@
+String greet(String? name) {
+    if (name == null) {
+        return "hello stranger"
+    }
+    return "hello " + name
+}
+main() {
+    println(greet(null))
+    println(greet("world"))
+}

@@ -1,0 +1,4 @@
+main() {
+    var n = 3000000000L
+    println(String.format("%d", n))
+}

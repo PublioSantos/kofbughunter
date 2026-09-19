@@ -1,0 +1,4 @@
+main() {
+    var n = 0b1010
+    println(n)
+}

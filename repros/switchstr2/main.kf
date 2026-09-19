@@ -1,0 +1,9 @@
+main() {
+    var x = 1
+    var result = switch (x) {
+        case 1 -> 100L
+        case 2 -> 200L
+        default -> 0L
+    }
+    println(result)
+}

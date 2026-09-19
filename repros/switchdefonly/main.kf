@@ -1,0 +1,7 @@
+main() {
+    var x = 99
+    var r = switch (x) {
+        default -> "unknown"
+    }
+    println(r)
+}

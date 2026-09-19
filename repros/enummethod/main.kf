@@ -1,0 +1,7 @@
+enum Day { MON, TUE, WED, THU, FRI, SAT, SUN }
+main() {
+    var d = Day.WED
+    println(d.ordinal())
+    println(d.name())
+    println(d == Day.WED)
+}

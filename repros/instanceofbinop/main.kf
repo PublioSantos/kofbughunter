@@ -1,0 +1,5 @@
+main() {
+    var x = "hello"
+    var result = x instanceof String && x.length() > 3
+    println(result)
+}

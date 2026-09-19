@@ -1,0 +1,5 @@
+main() {
+    var a = "apple"
+    var b = "banana"
+    println(a < b)
+}

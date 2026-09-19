@@ -1,0 +1,3 @@
+main() {
+    println(String.format("%.2f", 3.14))
+}

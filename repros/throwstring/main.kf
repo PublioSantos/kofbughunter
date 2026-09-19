@@ -1,0 +1,7 @@
+main() {
+    try {
+        throw "something went wrong"
+    } catch (String e) {
+        println("caught: " + e)
+    }
+}

@@ -1,0 +1,12 @@
+main() {
+    var a = 1
+    var b = 2
+    if (a && b) {
+        println("both nonzero")
+    } else {
+        println("zero")
+    }
+    if (0 || b) {
+        println("one nonzero")
+    }
+}

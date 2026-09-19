@@ -1,0 +1,6 @@
+main() {
+    var x: Int = 42
+    var s: String = "hello"
+    println(x)
+    println(s)
+}

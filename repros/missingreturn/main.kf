@@ -1,0 +1,8 @@
+Int risky(Int n) {
+    if (n > 0) {
+        return n * 2
+    }
+}
+main() {
+    println(risky(5))
+}

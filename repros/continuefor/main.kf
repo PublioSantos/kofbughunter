@@ -1,0 +1,10 @@
+main() {
+    var sum = 0
+    var i = 0
+    while (i < 10) {
+        i++
+        if (i == 5) continue
+        sum += i
+    }
+    println(sum)
+}
