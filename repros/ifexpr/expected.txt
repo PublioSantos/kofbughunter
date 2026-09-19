@@ -1,3 +1,2 @@
-positive
-non-positive
-non-positive
+big
+two

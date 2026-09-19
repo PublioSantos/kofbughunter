@@ -1,0 +1,7 @@
+main() {
+    var m = mapOf("a", 1, "b", 2, "c", 3)
+    var keys = m.keys()
+    println(keys.size())
+    var vals = m.values()
+    println(vals.size())
+}

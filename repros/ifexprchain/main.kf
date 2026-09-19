@@ -1,0 +1,10 @@
+main() {
+    var a = 10
+    var b = 20
+    var max = if (a > b) a else b
+    println(max)
+    var min = if (a < b) a else b
+    println(min)
+    var clamped = if (a < 0) 0 else if (a > 100) 100 else a
+    println(clamped)
+}

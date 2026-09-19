@@ -1,0 +1,9 @@
+Int apply(Int a, Int b, (Int, Int) -> Int f) {
+    return f(a, b)
+}
+main() {
+    var add = (x: Int, y: Int) -> x + y
+    var mul = (x: Int, y: Int) -> x * y
+    println(apply(3, 4, add))
+    println(apply(3, 4, mul))
+}

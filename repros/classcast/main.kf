@@ -1,0 +1,7 @@
+class Rect(Int width, Int height) {
+    Double ratio() { return this.width as Double / this.height as Double }
+}
+main() {
+    var r = Rect(16, 9)
+    println(r.ratio())
+}

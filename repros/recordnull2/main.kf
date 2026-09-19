@@ -1,0 +1,9 @@
+record Item(String name, Int? count)
+main() {
+    var a = Item("apple", 5)
+    var b = Item("banana", null)
+    println(a.name())
+    println(a.count())
+    println(b.name())
+    println(b.count())
+}

@@ -1,0 +1,9 @@
+main() {
+    var c = 'A'
+    println(c)
+    println(c.toString())
+    var s = "hello"
+    var ch = s.charAt(1)
+    println(ch)
+    println(ch.toString())
+}

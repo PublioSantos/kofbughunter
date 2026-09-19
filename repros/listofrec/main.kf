@@ -1,0 +1,8 @@
+record Item(String name, Int value) {}
+main() {
+    var items = listOf(Item("a", 1), Item("b", 2), Item("c", 3))
+    println(items.size())
+    for (var item in items) {
+        println(item.name() + "=" + item.value())
+    }
+}

@@ -1,0 +1,16 @@
+enum Color { Red, Green, Blue }
+Color? findColor(String name) {
+    if (name == "red") { return Color.Red }
+    return null
+}
+main() {
+    var c1 = findColor("red")
+    println(c1)
+    var c2 = findColor("purple")
+    println(c2)
+    if (c2 != null) {
+        println("found: " + c2)
+    } else {
+        println("not found")
+    }
+}

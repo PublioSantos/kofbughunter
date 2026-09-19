@@ -1,0 +1,12 @@
+main() {
+    var sum = 0
+    for (var i = 0; i < 5; i++) {
+        sum = sum + i
+    }
+    println(sum)
+    var product = 1
+    for (var j = 1; j <= 4; j++) {
+        product = product * j
+    }
+    println(product)
+}

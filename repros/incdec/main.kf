@@ -1,0 +1,13 @@
+main() {
+    var i = 5
+    i++
+    println(i)
+    i--
+    i--
+    println(i)
+    var j = 0
+    while (j < 3) {
+        j++
+    }
+    println(j)
+}

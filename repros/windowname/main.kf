@@ -1,0 +1,8 @@
+record Window(Int w, Int h) {}
+main() {
+    var win = Window(800, 600)
+    println(win.w())
+    println(win.h())
+    var fw = win.w() as Double
+    println(fw)
+}

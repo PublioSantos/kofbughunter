@@ -1,0 +1,8 @@
+main() {
+    var base = 10
+    var adder = (x: Int) -> x + base
+    println(adder(5))
+    println(adder(20))
+    base = 100
+    println(adder(5))
+}

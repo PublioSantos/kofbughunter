@@ -1,0 +1,7 @@
+main() {
+    var a = "hello"
+    var b = "HELLO"
+    println(a.equalsIgnoreCase(b))
+    println(a.compareTo(b))
+    println(a.compareToIgnoreCase(b))
+}

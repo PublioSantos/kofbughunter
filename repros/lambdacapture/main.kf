@@ -1,0 +1,13 @@
+main() {
+    var count = 0
+    var nums = listOf(1, 2, 3, 4, 5)
+    nums.filter((x: Int) -> {
+        count = count + 1
+        return x > 2
+    })
+    println(count)
+    var prefix = "item"
+    var labels = nums.map((x: Int) -> prefix + x)
+    println(labels.get(0))
+    println(labels.get(4))
+}

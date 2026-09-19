@@ -1,0 +1,8 @@
+main() {
+    var s = "one,two,three"
+    var parts = s.split(",")
+    println(parts.length)
+    for (var p in parts) {
+        println(p)
+    }
+}

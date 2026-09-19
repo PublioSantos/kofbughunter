@@ -1,0 +1,8 @@
+enum Priority { Low, Medium, High }
+main() {
+    var items = listOf(Priority.Low, Priority.High, Priority.Medium)
+    println(items.size())
+    for (var p in items) {
+        println(p.name())
+    }
+}

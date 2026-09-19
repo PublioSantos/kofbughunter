@@ -1,0 +1,8 @@
+class Window(Int w, Int h) {
+    Double aspect() { return this.w as Double / this.h as Double }
+}
+main() {
+    var win = Window(800, 600)
+    println(win.w)
+    println(win.aspect())
+}

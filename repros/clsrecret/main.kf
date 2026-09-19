@@ -1,0 +1,12 @@
+record Vec(Int dx, Int dy) {}
+class Path(Int x, Int y) {
+    Vec moveTo(Int nx, Int ny) {
+        return Vec(nx - this.x, ny - this.y)
+    }
+}
+main() {
+    var p = Path(0, 0)
+    var v = p.moveTo(5, 3)
+    println(v.dx())
+    println(v.dy())
+}

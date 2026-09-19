@@ -1,0 +1,11 @@
+record Person(String name, Int age) {}
+String greeting(Person p) {
+    if (p.age() >= 18) {
+        return "Hello " + p.name()
+    }
+    return "Hi " + p.name()
+}
+main() {
+    println(greeting(Person("Mel", 26)))
+    println(greeting(Person("Kid", 10)))
+}

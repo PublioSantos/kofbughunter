@@ -1,0 +1,5 @@
+main() {
+    var h = spawn { return 42 }
+    var result = await h
+    println(result)
+}

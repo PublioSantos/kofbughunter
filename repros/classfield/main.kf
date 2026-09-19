@@ -1,0 +1,14 @@
+class Counter {
+    Int count
+    constructor() { count = 0 }
+    Double asDouble() { return this.count as Double }
+    void inc() { this.count = this.count + 1 }
+}
+main() {
+    var c = Counter()
+    c.inc()
+    c.inc()
+    c.inc()
+    println(c.count)
+    println(c.asDouble())
+}

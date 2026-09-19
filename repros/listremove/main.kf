@@ -1,0 +1,7 @@
+main() {
+    var nums = listOf(10, 20, 30, 40)
+    var removed = nums.remove(1)
+    println(removed)
+    println(nums.size())
+    println(nums.get(1))
+}

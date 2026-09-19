@@ -1,0 +1,11 @@
+main() {
+    var names = mapOf("a", "Alice", "b", "Bob")
+    var found = names.get("a")
+    println(found)
+    var missing = names.get("z")
+    if (missing != null) {
+        println("found: " + missing)
+    } else {
+        println("not found")
+    }
+}

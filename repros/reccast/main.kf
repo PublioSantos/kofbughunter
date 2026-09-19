@@ -1,0 +1,8 @@
+record Box(Int w, Int h) {}
+main() {
+    var b = Box(3, 4)
+    var fw = b.w() as Double
+    println(fw)
+    var fl = b.h() as Long
+    println(fl)
+}

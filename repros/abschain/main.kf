@@ -1,0 +1,18 @@
+abstract class Base {
+    abstract String tag()
+    String info() { return "base:" + this.tag() }
+}
+abstract class Mid extends Base {
+    abstract Int rank()
+    String info() { return "mid:" + this.tag() + ":" + this.rank() }
+}
+class Leaf extends Mid {
+    String tag() { return "leaf" }
+    Int rank() { return 42 }
+}
+main() {
+    var obj = Leaf()
+    println(obj.tag())
+    println(obj.rank())
+    println(obj.info())
+}

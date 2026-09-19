@@ -1,0 +1,13 @@
+enum Status { Active, Inactive, Pending }
+String describe(Status s) {
+    return switch (s) {
+        case Status.Active -> "running"
+        case Status.Inactive -> "stopped"
+        default -> "waiting"
+    }
+}
+main() {
+    println(describe(Status.Active))
+    println(describe(Status.Inactive))
+    println(describe(Status.Pending))
+}

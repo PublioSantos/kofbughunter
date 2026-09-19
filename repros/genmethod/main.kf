@@ -1,0 +1,9 @@
+identity<T>(T x): T {
+    return x
+}
+main() {
+    var s = identity("hello")
+    println(s)
+    var n = identity(42)
+    println(n)
+}

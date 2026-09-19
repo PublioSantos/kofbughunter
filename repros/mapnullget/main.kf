@@ -1,0 +1,11 @@
+main() {
+    var ages = mapOf("Ana", 34, "Bob", 17)
+    var found = ages.get("Ana")
+    println(found)
+    var missing = ages.get("Zed")
+    if (missing != null) {
+        println("found: " + missing)
+    } else {
+        println("not found")
+    }
+}

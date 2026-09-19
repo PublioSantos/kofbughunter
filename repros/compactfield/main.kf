@@ -1,0 +1,13 @@
+class Rect(Int width, Int height) {
+    Int area() { return this.width * this.height }
+    Int perim() { return 2 * this.width + 2 * this.height }
+    Boolean square() { return this.width == this.height }
+}
+main() {
+    var r = Rect(4, 5)
+    println(r.area())
+    println(r.perim())
+    println(r.square())
+    var s = Rect(3, 3)
+    println(s.square())
+}

@@ -1,8 +1,19 @@
-show(x: Int?): String {
-    if (x == null) { return "none" }
-    return x.toString()
+String? maybeStr(Boolean flag) {
+    if (flag) {
+        return "hello"
+    }
+    return null
 }
 main() {
-    println(show(5))
-    println(show(null))
+    var s1 = maybeStr(true)
+    if (s1 != null) {
+        println(s1.toUpperCase())
+        println(s1.length())
+    }
+    var s2 = maybeStr(false)
+    if (s2 != null) {
+        println("got: " + s2)
+    } else {
+        println("was null")
+    }
 }

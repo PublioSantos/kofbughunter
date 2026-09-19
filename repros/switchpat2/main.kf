@@ -1,0 +1,13 @@
+record Circle(Double radius) {}
+record Square(Double side) {}
+Double area(Object shape) {
+    return switch (shape) {
+        case Circle c -> 3.14159 * c.radius() * c.radius()
+        case Square s -> s.side() * s.side()
+        default -> 0.0
+    }
+}
+main() {
+    println(area(Circle(2.0)))
+    println(area(Square(3.0)))
+}

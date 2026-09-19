@@ -1,0 +1,6 @@
+main() {
+    var width = 16
+    var height = 9
+    var ratio = width as Double / height as Double
+    println(ratio)
+}

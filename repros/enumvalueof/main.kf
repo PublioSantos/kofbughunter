@@ -1,0 +1,7 @@
+enum Dir { N, S, E, W }
+main() {
+    var d = Dir.valueOf("N")
+    println(d)
+    var bad = Dir.valueOf("X")
+    println(bad)
+}

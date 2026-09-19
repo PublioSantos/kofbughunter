@@ -1,0 +1,8 @@
+record User(String nm, Int age)
+main() {
+    var users = listOf(User("Ana", 34), User("Bob", 17), User("Mel", 26))
+    var adults = users.filter((u: User) -> u.age() >= 18).map((u: User) -> u.nm().toUpperCase())
+    println(adults.size())
+    println(adults.get(0))
+    println(adults.get(1))
+}

@@ -1,0 +1,15 @@
+interface Converter<T> {
+    String convert(T input)
+}
+class IntConverter implements Converter<Int> {
+    String convert(Int input) { return "int:" + input }
+}
+class StrConverter implements Converter<String> {
+    String convert(String input) { return "str:" + input.toUpperCase() }
+}
+main() {
+    var ic = IntConverter()
+    println(ic.convert(42))
+    var sc = StrConverter()
+    println(sc.convert("hello"))
+}

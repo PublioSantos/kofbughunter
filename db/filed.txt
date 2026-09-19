@@ -66,3 +66,4 @@ SEM:SEM025|422|List.any/all/none/count/sorted missing; implicit lambda it not su
 RUNTIME:COMP002|423|Compiler crash on filter { it % 2 == 0 } — MemberCallTyper mutates immutable list
 PARSE:PARSE011|425|object declaration not parsed
 WRONGOUTPUT:CharAsInt|426|Char printed as numeric code — println(c) emits 65 instead of A
+RUNTIME:NoClassDefFoundError:as-cast-left-of-op|459|as-cast on LEFT of higher-precedence binary op drops operator+RHS, checkcast "?"

@@ -1,0 +1,7 @@
+main() {
+    var s = ""
+    println(s.isEmpty())
+    var t = "hello"
+    println(t.isEmpty())
+    println(t.length())
+}

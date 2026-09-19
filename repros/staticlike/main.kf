@@ -1,0 +1,12 @@
+class MathUtils {
+    Int square(Int x) { return x * x }
+    Int cube(Int x) { return x * x * x }
+    Bool isEven(Int x) { return x % 2 == 0 }
+}
+main() {
+    var m = MathUtils()
+    println(m.square(5))
+    println(m.cube(3))
+    println(m.isEven(4))
+    println(m.isEven(7))
+}

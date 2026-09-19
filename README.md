@@ -4,13 +4,9 @@
 Faz tudo que é repetitivo para que o esforço de IA fique só onde é inevitável:
 gerar o repro e explicar a causa raiz.
 
-O objetivo não é produzir issues. É encontrar bugs reais.
-
 **[EN]** Mechanical support tool for bug-hunting in Kof (JVM target).
 Handles all repetitive work so AI effort is spent only where it cannot be replaced:
 inventing the reproducer and explaining the root cause.
-
-The goal is not to generate issues. It is to find real bugs.
 
 ---
 
@@ -207,7 +203,7 @@ and resurrect every already-fixed bug.*
 kofbughunter → encontra bug → ./kofbug run → ./kofbug issue → gh issue create
              → aplica fix   → ./kofbug pr <repro> <issue#> <kof4j-dir>
                             → PR aberto contra KofLang/Kof4j:beta-0.4.0
-                            → Criadora da Linguage Kof revisa → fecha issue
+                            → Criadora da linguagem Kof revisa → fecha issue
 ```
 
 `kofbug pr` compila o Kof4j localmente (Maven + JDK 25 do toolchain), verifica o repro contra o jar patched, e abre o PR diretamente.

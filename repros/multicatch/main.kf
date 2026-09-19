@@ -1,0 +1,12 @@
+main() {
+    var denom = 0
+    try {
+        var x = 10 / denom
+        println(x)
+    } catch (ArithmeticException e) {
+        println("arithmetic: " + e.getMessage())
+    } catch (Exception e) {
+        println("other: " + e.getMessage())
+    }
+    println("done")
+}

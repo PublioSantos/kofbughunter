@@ -1,0 +1,9 @@
+class Counter(Int count) {
+    Long toLong() { return this.count as Long }
+    Double toDouble() { return this.count as Double }
+}
+main() {
+    var c = Counter(42)
+    println(c.toLong())
+    println(c.toDouble())
+}

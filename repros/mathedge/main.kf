@@ -1,0 +1,8 @@
+main() {
+    var nan = math.sqrt(-1.0)
+    println(nan)
+    var inf = 1.0 / 0.0
+    println(inf)
+    var negInf = -1.0 / 0.0
+    println(negInf)
+}

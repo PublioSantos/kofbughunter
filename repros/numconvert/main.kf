@@ -1,0 +1,11 @@
+main() {
+    var i = 42
+    var l = i as Long
+    println(l)
+    var d = 3.7
+    var n = d as Int
+    println(n)
+    var big = 1000000000L
+    var small = big as Int
+    println(small)
+}

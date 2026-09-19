@@ -1,0 +1,5 @@
+main() {
+    var nums = listOf(1, 2, 3, 4, 5)
+    var sum = nums.reduce(0, (acc: Int, x: Int) -> acc + x)
+    println(sum)
+}

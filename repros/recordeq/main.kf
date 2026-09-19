@@ -1,0 +1,9 @@
+record Point(Int x, Int y)
+main() {
+    var p1 = Point(3, 4)
+    var p2 = Point(3, 4)
+    var p3 = Point(1, 2)
+    println(p1 == p2)
+    println(p1 == p3)
+    println(p1 != p3)
+}

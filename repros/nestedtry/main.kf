@@ -1,0 +1,14 @@
+main() {
+    try {
+        throw "outer"
+    } catch (String e) {
+        println("outer: " + e)
+        try {
+            throw "inner"
+        } catch (String ie) {
+            println("inner: " + ie)
+        }
+        println("after inner")
+    }
+    println("done")
+}

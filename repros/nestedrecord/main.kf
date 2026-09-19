@@ -1,0 +1,9 @@
+record Point(Int x, Int y)
+record Rect(Point tl, Point br)
+main() {
+    var r = Rect(Point(0, 0), Point(10, 5))
+    println(r.tl().x())
+    println(r.tl().y())
+    println(r.br().x())
+    println(r.br().y())
+}

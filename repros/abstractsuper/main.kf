@@ -1,0 +1,22 @@
+abstract class Animal {
+    String nm
+    constructor(String n) { nm = n }
+    abstract String sound()
+    String describe() {
+        return nm + " says " + sound()
+    }
+}
+class Dog extends Animal {
+    constructor(String n) { super(n) }
+    String sound() { return "woof" }
+}
+class Cat extends Animal {
+    constructor(String n) { super(n) }
+    String sound() { return "meow" }
+}
+main() {
+    var d = Dog("Rex")
+    var c = Cat("Mia")
+    println(d.describe())
+    println(c.describe())
+}

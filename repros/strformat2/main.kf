@@ -1,0 +1,7 @@
+main() {
+    var big = 1000000
+    var formatted = String.format("%,d", big)
+    println(formatted)
+    var pct = String.format("%.1f%%", 75.5)
+    println(pct)
+}

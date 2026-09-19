@@ -1,0 +1,7 @@
+enum Color { Red, Green }
+main() {
+    var c = Color.Red
+    var o = c as Object
+    println(o)
+    println(o instanceof Color)
+}

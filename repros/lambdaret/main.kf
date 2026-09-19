@@ -1,0 +1,9 @@
+(Int) -> Int makeAdder(Int base) {
+    return (x: Int) -> x + base
+}
+main() {
+    var add5 = makeAdder(5)
+    var add10 = makeAdder(10)
+    println(add5(3))
+    println(add10(3))
+}

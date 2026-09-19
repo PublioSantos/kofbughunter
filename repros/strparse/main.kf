@@ -1,0 +1,8 @@
+main() {
+    var n = Int.parseInt("42")
+    println(n)
+    var d = Double.parseDouble("3.14")
+    println(d)
+    var l = Long.parseLong("9876543210")
+    println(l)
+}

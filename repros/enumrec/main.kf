@@ -1,0 +1,8 @@
+enum Status { Active, Inactive }
+record Task(String title, Status status) {}
+main() {
+    var t = Task("Deploy", Status.Active)
+    println(t.title())
+    println(t.status())
+    println(t.status().name())
+}

@@ -1,7 +1,6 @@
 main() {
-    var s: String = "hello world"
-    println(s.toUpperCase())
-    println(s.replace("world", "kof"))
-    println(s.startsWith("hello"))
-    println(s.endsWith("world"))
+    var s = String.format("Hello %s, you are %d years old", "Mel", 26)
+    println(s)
+    var n = String.format("%.2f", 3.14159)
+    println(n)
 }

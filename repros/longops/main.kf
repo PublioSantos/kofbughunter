@@ -1,0 +1,9 @@
+main() {
+    var a = 9999999999
+    var b = 9999999999
+    println(a + b)
+    println(a * 2)
+    var intVal = 5
+    var longVal = 10000000000
+    println(longVal + intVal)
+}

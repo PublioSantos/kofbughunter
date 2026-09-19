@@ -1,0 +1,4 @@
+apple
+5
+banana
+null

@@ -1,0 +1,10 @@
+record Pair(String key, Int val) {}
+main() {
+    var m = mapOf("x", 1, "y", 2, "z", 3)
+    println(m.get("x"))
+    println(m.get("y"))
+    println(m.get("missing"))
+    m.put("w", 4)
+    println(m.get("w"))
+    println(m.size())
+}

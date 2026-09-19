@@ -1,0 +1,11 @@
+main() {
+    var seen = setOf(1, 2, 2, 3)
+    println(seen.size())
+    println(seen.contains(2))
+    println(seen.contains(9))
+    println(seen.add(4))
+    println(seen.add(2))
+    println(seen.size())
+    seen.remove(1)
+    println(seen.size())
+}

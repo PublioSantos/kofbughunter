@@ -1,0 +1,12 @@
+main() {
+    var arr = new Int[3]
+    arr[0] = 10
+    arr[1] = 20
+    arr[2] = 30
+    var sum = 0
+    for (var x in arr) {
+        sum = sum + x
+    }
+    println(sum)
+    println(arr.length)
+}

@@ -1,0 +1,8 @@
+record Window(Int width, Int height) {}
+main() {
+    var w = Window(800, 600)
+    var area = w.width() * w.height()
+    println(area)
+    var aspect = w.width() as Double / w.height() as Double
+    println(aspect)
+}

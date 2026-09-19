@@ -1,0 +1,16 @@
+record Circle(Double radius)
+record Rect(Double w, Double h)
+
+String describe(Object shape) {
+    switch (shape) {
+        case Circle c: { return "circle r=" + c.radius() }
+        case Rect r: { return "rect " + r.w() + "x" + r.h() }
+        default: { return "unknown" }
+    }
+}
+
+main() {
+    println(describe(Circle(2.0)))
+    println(describe(Rect(3.0, 4.0)))
+    println(describe("other"))
+}

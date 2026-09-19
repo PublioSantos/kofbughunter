@@ -1,0 +1,18 @@
+class Bag(String label) {
+    Set<String> contents
+    Map<String, Int> counts
+    
+    public constructor(String lbl) {
+        this.label = lbl
+        this.contents = setOf("a", "b", "c")
+        this.counts = mapOf("x", 1, "y", 2)
+    }
+    
+    Boolean has(String item) { return this.contents.contains(item) }
+    Int count(String key) { return this.counts.get(key) }
+}
+main() {
+    var b = Bag("test")
+    println(b.has("a"))
+    println(b.has("z"))
+}

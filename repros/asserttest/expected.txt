@@ -1,0 +1,2 @@
+assert passed
+all ok

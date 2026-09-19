@@ -1,0 +1,10 @@
+class User(String name, Int age) {
+    greet(): String {
+        return "Hello, " + name
+    }
+}
+
+main() {
+    var u = User("Mel", 26)
+    println(u.greet())
+}

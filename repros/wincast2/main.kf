@@ -1,0 +1,6 @@
+record Win(Int width, Int height) {}
+main() {
+    var w = Win(800, 600)
+    var fw = w.width() as Double
+    println(fw)
+}

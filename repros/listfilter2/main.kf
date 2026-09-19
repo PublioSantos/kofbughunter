@@ -1,0 +1,8 @@
+main() {
+    var nums = listOf(1, 2, 3, 4, 5, 6)
+    var evens = nums.filter((x: Int) -> x % 2 == 0)
+    println(evens.size())
+    for (var v in evens) {
+        println(v)
+    }
+}

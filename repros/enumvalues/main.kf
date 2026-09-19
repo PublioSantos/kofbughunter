@@ -1,0 +1,8 @@
+enum Color { Red, Green, Blue }
+main() {
+    var vs = Color.values()
+    println(vs.size())
+    for (var v in vs) {
+        println(v)
+    }
+}

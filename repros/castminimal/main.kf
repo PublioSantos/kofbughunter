@@ -1,0 +1,4 @@
+main() {
+    var a = 1
+    println(a as Double / 2.0)
+}

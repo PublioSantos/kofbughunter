@@ -1,0 +1,9 @@
+main() {
+    println(strings.reverse("hello"))
+    println(strings.repeat("ab", 3))
+    println(strings.capitalize("world"))
+    println(strings.padLeft("7", 4, "0"))
+    println(strings.padRight("7", 4, "0"))
+    println(strings.toCamelCase("hello_world_test"))
+    println(strings.toSnakeCase("HelloWorld"))
+}

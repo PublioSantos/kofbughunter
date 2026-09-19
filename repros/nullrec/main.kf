@@ -1,0 +1,18 @@
+record Point(Int x, Int y) {}
+Point? find(Bool cond) {
+    if (cond) { return Point(3, 4) }
+    return null
+}
+main() {
+    var p = find(true)
+    if (p != null) {
+        println(p.x())
+        println(p.y())
+    }
+    var q = find(false)
+    if (q != null) {
+        println("should not print")
+    } else {
+        println("correctly null")
+    }
+}

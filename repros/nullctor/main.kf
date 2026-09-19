@@ -1,0 +1,11 @@
+class Holder(String? label) {
+    show(): String {
+        if (label != null) { return label }
+        return "none"
+    }
+}
+
+main() {
+    var h = Holder("hi")
+    println(h.show())
+}

@@ -1,0 +1,9 @@
+main() {
+    var s = "hello world"
+    println(s.startsWith("hello"))
+    println(s.endsWith("world"))
+    println(s.contains("lo wo"))
+    println(s.contains("xyz"))
+    var t = "  trimmed  "
+    println(t.trim())
+}

@@ -1,0 +1,20 @@
+abstract class Shape {
+    abstract Double area()
+    String describe() { return "area=" + this.area() }
+}
+class Circle extends Shape {
+    Double r
+    constructor(Double r) { this.r = r }
+    Double area() { return 3.14159 * this.r * this.r }
+}
+class Square extends Shape {
+    Double s
+    constructor(Double s) { this.s = s }
+    Double area() { return this.s * this.s }
+}
+main() {
+    var shapes = listOf(Circle(2.0) as Shape, Square(3.0) as Shape)
+    for (var sh in shapes) {
+        println(sh.describe())
+    }
+}

@@ -1,0 +1,10 @@
+main() {
+    var s = "  hello world  "
+    println(s.trim())
+    println(s.trim().toUpperCase())
+    var idx = s.indexOf("world")
+    println(idx)
+    var sub = s.substring(7, 12)
+    println(sub)
+    println(s.replace("world", "kof"))
+}

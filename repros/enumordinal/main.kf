@@ -1,0 +1,8 @@
+enum Season { Spring, Summer, Autumn, Winter }
+main() {
+    var s = Season.Summer
+    println(s.ordinal())
+    println(s.name())
+    println(Season.Winter.ordinal())
+    println(Season.Spring.ordinal())
+}

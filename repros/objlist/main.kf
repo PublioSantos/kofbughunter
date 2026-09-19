@@ -1,0 +1,15 @@
+String describe(Object o) {
+    if (o instanceof String) {
+        var s = o as String
+        return "String: " + s
+    }
+    if (o instanceof Int) {
+        var n = o as Int
+        return "Int: " + n
+    }
+    return "other"
+}
+main() {
+    println(describe("hello"))
+    println(describe(42))
+}

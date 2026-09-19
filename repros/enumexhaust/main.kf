@@ -1,0 +1,13 @@
+enum Dir { N, S, E, W }
+String label(Dir d) {
+    return switch (d) {
+        case Dir.N -> "north"
+        case Dir.S -> "south"
+        case Dir.E -> "east"
+        case Dir.W -> "west"
+    }
+}
+main() {
+    println(label(Dir.N))
+    println(label(Dir.W))
+}

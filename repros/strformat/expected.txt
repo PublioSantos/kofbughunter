@@ -1,4 +1,2 @@
-HELLO WORLD
-hello kof
-true
-true
+Hello Mel, you are 26 years old
+3.14

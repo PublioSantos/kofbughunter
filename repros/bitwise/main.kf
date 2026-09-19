@@ -1,0 +1,10 @@
+main() {
+    var a = 12
+    var b = 10
+    println(a & b)
+    println(a | b)
+    println(a ^ b)
+    println(a << 2)
+    println(a >> 1)
+    println(-1 >>> 28)
+}

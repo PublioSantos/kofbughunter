@@ -1,0 +1,5 @@
+main() {
+    var a = 1
+    var r = a as Long << 2
+    println(r)
+}

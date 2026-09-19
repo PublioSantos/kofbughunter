@@ -1,0 +1,11 @@
+(Int) -> Int makeMultiplier(Int factor) {
+    return (x: Int) -> x * factor
+}
+main() {
+    var dbl = makeMultiplier(2)
+    var triple = makeMultiplier(3)
+    var nums = listOf(1, 2, 3)
+    for (var n in nums) {
+        println(dbl(n) + " " + triple(n))
+    }
+}

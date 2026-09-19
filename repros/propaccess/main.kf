@@ -1,0 +1,6 @@
+main() {
+    var list = listOf(1, 2, 3, 4)
+    println(list.size)
+    var s = "hello"
+    println(s.length)
+}

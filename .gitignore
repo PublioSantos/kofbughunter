@@ -1,4 +1,5 @@
 apoiador/build/
+build/
 repros/*/build/
 repros/*/.cap/
 db/.update-check

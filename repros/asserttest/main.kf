@@ -1,0 +1,8 @@
+main() {
+    var x = 42
+    assert(x == 42)
+    println("assert passed")
+    var s = "hello"
+    assert(s.length() == 5)
+    println("all ok")
+}

@@ -1,0 +1,15 @@
+interface Printable {
+    String display()
+}
+interface Measurable {
+    Int measure()
+}
+class Box(String label, Int sz) implements Printable, Measurable {
+    String display() { return "Box(" + this.label + ")" }
+    Int measure() { return this.sz }
+}
+main() {
+    var b = Box("cargo", 42)
+    println(b.display())
+    println(b.measure())
+}

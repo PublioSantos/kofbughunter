@@ -1,0 +1,13 @@
+class Animal(String nm) {
+    String speak() { return this.nm + " makes a sound" }
+    String name() { return this.nm }
+}
+class Dog(String nm) extends Animal {
+    constructor(String n) { super(n) }
+    String speak() { return super.speak() + " (woof)" }
+}
+main() {
+    var d = Dog("Rex")
+    println(d.speak())
+    println(d.name())
+}

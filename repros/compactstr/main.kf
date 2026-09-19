@@ -1,0 +1,9 @@
+class Point(Int x, Int y) {
+    String label() { return "(" + this.x + ", " + this.y + ")" }
+    Int sum() { return this.x + this.y }
+}
+main() {
+    var p = Point(3, 4)
+    println(p.label())
+    println(p.sum())
+}

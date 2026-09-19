@@ -1,0 +1,6 @@
+main() {
+    var nums = listOf(1, 2, 3)
+    println(nums)
+    var strs = listOf("a", "b", "c")
+    println(strs)
+}
